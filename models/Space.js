@@ -10,10 +10,8 @@ const SpaceSchema = new mongoose.Schema(
       type: String,
     },
     features: {
-      nestedObject: {
-        type: String,
-        // To Do: expand on what type of properties 'features' will have
-      },
+      any: {},
+      // To Do: expand on what type of properties 'features' will have
     },
     // These properties still need fleshing out
     Spaces: [],
