@@ -1,1 +1,4 @@
-module.exports = { spacesRoutes: require("./spacesRoutes") };
+module.exports = {
+  spacesRoutes: require("./spacesRoutes"),
+  authRoutes: require("./authRoutes"),
+};
