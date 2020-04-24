@@ -1,4 +1,5 @@
 <%- include("../partials/_head") %>
+<main>
     <h1>Login</h1>
 
     <p><%=locals.error ? error : ""%></p>
@@ -16,7 +17,7 @@
         <div class="mt-3">
             <button class="btn btn-primary btn-sm" type="submit">Login</button>
             <a class="btn btn-danger btn-sm" href="/">Cancel</a>
-        </div>
-        
+        </div>  
     </form>
+</main>
 <%- include("../partials/_footer") %>
