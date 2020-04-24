@@ -27,6 +27,7 @@ app.set("view engine", "ejs");
 /* ROUTES */
 const routes = require("./routes");
 app.use("/auth", routes.authRoutes);
+app.use("/tasks", routes.tasksRoutes);
 app.use("/spaces", routes.spacesRoutes);
 
 app.get("/", (req, res) => {
