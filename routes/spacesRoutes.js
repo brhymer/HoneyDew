@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const ctrl = require("../controllers");
 
 router.get("/", (req, res) => {
-  res.send(process.env.SESSION_SECRET);
+  res.render("spaces/index");
 });
 
 module.exports = router;
