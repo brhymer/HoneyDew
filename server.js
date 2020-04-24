@@ -8,6 +8,16 @@ require("dotenv").config();
 const app = express();
 
 /* MIDDLEWARE */
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({
+      mongooseConnection: require("./models").mongooseConnection,
+    }),
+  })
+);
 app.use(express.static(`${__dirname}/public`));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -16,6 +26,7 @@ app.set("view engine", "ejs");
 
 /* ROUTES */
 const routes = require("./routes");
+app.use("/auth", routes.authRoutes);
 app.use("/spaces", routes.spacesRoutes);
 
 app.get("/", (req, res) => {
