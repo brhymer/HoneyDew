@@ -1,0 +1,15 @@
+<%- include("../partials/_head")%>
+
+<main>
+    <h1>Tasks</h1>
+    <%if(locals.error) {%>
+        <%-include("../partials/_errorAlert", {error: error})%>
+    <%}%>
+
+    <% tasks.forEach((task) => {%>
+        <h2><%=task.title%></h2>
+        <% }) %> 
+
+</main>
+
+<%- include("../partials/_footer")%>

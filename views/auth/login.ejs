@@ -2,7 +2,10 @@
 <main>
     <h1>Login</h1>
 
-    <p><%=locals.error ? error : ""%></p>
+    <% if(locals.error){%>
+        <%- include("../partials/_errorAlert", {error: error})%>
+    <%}%>
+    
 
     <p>New to HoneyDew? <a href="/auth/register">Sign up now!</a></p>
     <form action="/auth/login" method="POST">
