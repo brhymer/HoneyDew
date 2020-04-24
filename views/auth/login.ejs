@@ -1,5 +1,8 @@
 <%- include("../partials/_head") %>
     <h1>Login</h1>
+
+    <p><%=locals.error ? error : ""%></p>
+
     <p>New to HoneyDew? <a href="/auth/register">Sign up now!</a></p>
     <form action="/auth/login" method="POST">
         <div class="mt-3">

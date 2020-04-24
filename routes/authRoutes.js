@@ -4,7 +4,36 @@ const ctrl = require("../controllers");
 const bcrypt = require("bcryptjs");
 
 router.get("/login", (req, res, next) => {
-  res.render("auth/login");
+  res.render("auth/login", { title: "Login" });
+});
+
+router.post("/login", async (req, res, next) => {
+  try {
+    //If user email not there, invalid credential
+    const user = await ctrl.authCtrl.getUser({ username: req.body.username });
+    if (!user) {
+      res.render("auth/login", {
+        title: "Login",
+        error: "Invalid Credentials",
+      });
+    }
+
+    //use bcrypt compareSync to compare the req.body.pw with the user object pw
+    //if they don't match, invalid credential
+    const passwordsMatch = bcrypt.compareSync(req.body.password, user.password);
+    if (!passwordsMatch) {
+      res.render("auth/login", {
+        title: "Login",
+        error: "Invalid Credentials",
+      });
+    }
+
+    // create session
+    req.session.currentUser = user._id;
+    res.redirect("/");
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.get("/register", (req, res, next) => {
@@ -13,10 +42,14 @@ router.get("/register", (req, res, next) => {
 
 router.post("/register", async (req, res, next) => {
   try {
+    //TODO Check that passwords match - form validation
+    //https://express-validator.github.io/docs/
+
     //Try and find user
     const user = await ctrl.authCtrl.getUser({
       $or: [{ username: req.body.username }, { email: req.body.email }],
     });
+
     if (user) {
       return res.render("auth/register", {
         title: "Register",
