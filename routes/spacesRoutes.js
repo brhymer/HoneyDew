@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.send(process.env.SESSION_SECRET);
+  res.render("spaces/index");
 });
 
 module.exports = router;
