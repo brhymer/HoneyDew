@@ -31,7 +31,7 @@ app.use("/tasks", routes.tasksRoutes);
 app.use("/spaces", routes.spacesRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Success");
+  res.render("index");
 });
 
 const port = process.env.PORT || 3550;
