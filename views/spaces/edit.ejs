@@ -1,0 +1,32 @@
+<%- include("../partials/_head") %>
+<main>
+  <h1>Modify this Space</h1>
+  <form action="/spaces/<%= space._id %>?_method=PUT" method="POST">
+    <!-- Name -->
+    <label for="name">Name: </label>
+    <input type="text" id="name" name="name" value="<%=space.name%>" />
+    <!-- Description -->
+    <label for="description">Description: </label>
+    <input
+      type="text"
+      id="description"
+      name="description"
+      value="<%=space.description%>"
+    />
+    <!-- Features, may need to be modified to accept object -->
+    <label for="features">Features (optional): </label>
+    <input
+      type="object"
+      id="features"
+      name="features"
+      value="<%=space.features%>"
+    />
+    <!-- To do: add fields for Spaces, Tasks, Users -->
+
+    <!-- Submit button -->
+    <button type="submit">Submit edits</button>
+  </form>
+  <br />
+  <a href="/spaces">Abandon modifications and return to index</a>
+</main>
+<%- include("../partials/_footer") %>

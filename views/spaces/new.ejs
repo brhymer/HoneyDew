@@ -1,0 +1,24 @@
+<%- include("../partials/_head") %>
+<main>
+  <h1>Add New Space</h1>
+  <form action="/spaces" method="POST">
+    <!-- Name -->
+    <label for="name">Name: </label>
+    <input type="text" id="name" name="name" />
+    <!-- Description -->
+    <label for="description">Description: </label>
+    <input type="text" id="description" name="description" />
+    <!-- Features, may need to be modified to accept object -->
+    <label for="features">Features (optional): </label>
+    <input type="text" id="features" name="features" />
+    <!-- To do: add fields for Spaces, Tasks, Users -->
+    <!-- <label for=""></label>
+    <input type="text" id="" name="" /> -->
+
+    <!-- Submit button -->
+    <button type="submit">Create this space</button>
+  </form>
+  <br />
+  <a href="/spaces">Abandon new space and return to index</a>
+</main>
+<%- include("../partials/_footer") %>

@@ -1,0 +1,23 @@
+<%- include("../partials/_head") %>
+<main>
+  <h1>Space Details</h1>
+
+  <section>
+    <p><b>Name: </b><%= space.name %></p>
+    <p><b>Description: </b><%= space.description %></p>
+    <p><b>Features: </b><%= space.features %></p>
+    <!-- other properties can be added here -->
+  </section>
+
+  <section>
+    <form action="/spaces/<%= space._id %>?_method=DELETE" method="POST">
+      <button type="submit">Remove this space</button>
+    </form>
+    <a href="/spaces/<%= space._id %>/edit">
+      <button>Modify this space</button>
+    </a>
+  </section>
+
+  <a href="/spaces">Back to index page</a>
+</main>
+<%- include("../partials/_footer") %>
