@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
       spaces: allSpaces,
     });
   } catch (err) {
-    res.send(err);
+    return res.send(err);
   }
 });
 
@@ -29,7 +29,7 @@ router.get("/new", async (req, res) => {
       title: "New home",
     });
   } catch (err) {
-    res.send(err);
+    return res.send(err);
   }
 });
 
@@ -39,7 +39,7 @@ router.post("/", async (req, res) => {
     const newSpace = await ctrl.spacesCtrl.createSpace(req.body);
     res.redirect(`/spaces/${newSpace._id}`);
   } catch (err) {
-    res.send(err);
+    return res.send(err);
   }
 });
 
@@ -52,43 +52,43 @@ router.get("/:id", async (req, res) => {
       space: getSpaceById,
     });
   } catch (err) {
-    res.send(err);
+    return res.send(err);
   }
 });
 
 // Edit route
 router.get("/:id/edit", async (req, res) => {
   try {
-    const foundSpace = await ctrl.spacesCtrl.foundSpace(req.params.id);
+    const foundSpace = await ctrl.spacesCtrl.getSpaceById(req.params.id);
     res.render("./spaces/edit", {
       title: "Edit this Space",
       space: foundSpace,
     });
   } catch (err) {
-    res.send(err);
+    return res.send(err);
   }
 });
 
 // Update route
 router.put("/:id", async (req, res) => {
   try {
-    const updatedSpace = await ctrl.spacesCtrl.updatedSpace(
+    const updatedSpace = await ctrl.spacesCtrl.updateSpaceById(
       req.params.id,
       req.body
     );
     res.redirect(`/spaces/${updatedSpace._id}`);
   } catch (err) {
-    res.send(err);
+    return res.send(err);
   }
 });
 
 // Delete route
 router.delete("/:id", async (req, res) => {
   try {
-    const deletedSpace = await ctrl.spacesCtrl.deletedSpace(req.params.id);
+    const deletedSpace = await ctrl.spacesCtrl.deleteSpaceById(req.params.id);
     res.redirect("/spaces");
   } catch (err) {
-    res.send(err);
+    return res.send(err);
   }
 });
 

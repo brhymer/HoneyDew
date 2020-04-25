@@ -7,7 +7,7 @@ async function getSpaces() {
 
 // async function getFullSpaces will be needed here as spacesRoutes adds functionality
 
-// Show
+// Show & Edit
 async function getSpaceById(id) {
   return await db.Space.findById(id);
 }
@@ -19,6 +19,11 @@ async function createSpace(reqBody) {
   const newSpace = { ...reqBody };
   return await db.Space.create(newSpace);
 }
+
+// // Edit
+// async function getFullSpaceById(id) {
+//   const foundSpace = { }
+// }
 
 // Update
 async function updateSpaceById(id, reqBody) {
