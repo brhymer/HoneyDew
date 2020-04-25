@@ -7,7 +7,7 @@
     <%}%>
 
     <a href="/tasks/new">Create New Task</a>
-
+    <%if(tasks.length > 0){%>
     <table class="table">
         <thead>
             <tr>
@@ -23,7 +23,7 @@
             <%tasks.forEach((task) =>{%>
                 <tr>
                     <th scope="row"><%=tasks.indexOf(task) + 1%></th>
-                    <td><a href="/tasks/show/<%=task.id%>"><%=task.title%></a></td>
+                    <td><a href="/tasks/<%=task.id%>"><%=task.title%></a></td>
                     <td><%=task.dueDate.toDateString()%></td>
                     <td><a class="btn btn-primary btn-sm" href="/tasks/edit/<%=task._id%>">Edit</a></td>
                     <td><a class="btn btn-danger btn-sm" href="/tasks/edit/<%=task._id%>">Delete</a></td>
@@ -32,6 +32,9 @@
             <%})%>
         </tbody>
     </table>
+    <% } else {%>
+        <p>You don't have any tasks, ya lazy bum</p>
+    <% } %> 
 
 </main>
 

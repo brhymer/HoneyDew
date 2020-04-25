@@ -8,4 +8,8 @@ async function getTasks(searchParameters) {
   return await db.Task.find(searchParameters);
 }
 
-module.exports = { createTask, getTasks };
+async function getTaskById(id) {
+  return await db.Task.findById(id);
+}
+
+module.exports = { createTask, getTasks, getTaskById };
