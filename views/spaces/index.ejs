@@ -1,5 +1,13 @@
 <%- include("../partials/_head") %>
 <main>
-    <h1>Spaces Index</h1>
+  <h1>Spaces Index</h1>
+
+  <% spaces.forEach((space) => { %>
+  <section>
+    <h4>
+      <a href="/spaces/<%= space._id %>"><%= space.name %></a>
+    </h4>
+  </section>
+  <% }) %>
 </main>
 <%- include("../partials/_footer") %>
