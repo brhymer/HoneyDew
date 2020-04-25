@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const ctrl = require("../controllers");
 const bcrypt = require("bcryptjs");
+const { check, validationResult } = require("express-validator");
 
 router.get("/login", (req, res, next) => {
   res.render("auth/login", { title: "Login" });
@@ -14,7 +15,7 @@ router.post("/login", async (req, res, next) => {
     if (!user) {
       res.render("auth/login", {
         title: "Login",
-        error: "Invalid Credentials",
+        errors: ["Invalid Credentials", "I just don't like you"],
       });
     }
 
@@ -24,7 +25,7 @@ router.post("/login", async (req, res, next) => {
     if (!passwordsMatch) {
       res.render("auth/login", {
         title: "Login",
-        error: "Invalid Credentials",
+        errors: ["Invalid Credentials"],
       });
     }
 
@@ -40,39 +41,51 @@ router.get("/register", (req, res, next) => {
   res.render("auth/register", { title: "Register" });
 });
 
-router.post("/register", async (req, res, next) => {
-  try {
-    //TODO Check that passwords match - form validation
-    //https://express-validator.github.io/docs/
+router.post(
+  "/register",
+  [check("email").isEmail(), check("password").isLength({ min: 8 })],
+  async (req, res, next) => {
+    try {
+      //TODO Check that passwords match - form validation
+      //https://express-validator.github.io/docs/
 
-    //Try and find user
-    const user = await ctrl.authCtrl.getUser({
-      $or: [{ username: req.body.username }, { email: req.body.email }],
-    });
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.render("auth/register", {
+          title: "Register",
+          errors: ctrl.authCtrl.formatValidationErrorMessage(errors.array()),
+        });
+      }
 
-    if (user) {
-      return res.render("auth/register", {
-        title: "Register",
-        error: "Username or email already exist",
+      //Try and find user
+      const user = await ctrl.authCtrl.getUser({
+        $or: [{ username: req.body.username }, { email: req.body.email }],
       });
+
+      if (user) {
+        return res.render("auth/register", {
+          title: "Register",
+          errors: ["Username or email already exist"],
+        });
+      }
+      //Otherwise, salt and hash
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(req.body.password, salt);
+      const userData = {
+        username: req.body.username,
+        email: req.body.email,
+        password: hash,
+      };
+
+      //Create user
+      await ctrl.authCtrl.createUser(userData);
+
+      //redirect to login
+      res.render("auth/login", { title: "Login" });
+    } catch (err) {
+      next(err);
     }
-    //Otherwise, salt and hash
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(req.body.password, salt);
-    const userData = {
-      username: req.body.username,
-      email: req.body.email,
-      password: hash,
-    };
-
-    //Create user
-    await ctrl.authCtrl.createUser(userData);
-
-    //redirect to login
-    res.render("auth/login", { title: "Login" });
-  } catch (err) {
-    next(err);
   }
-});
+);
 
 module.exports = router;
