@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const ctrl = require("../controllers");
 
+//INDEX
 router.get("/", async (req, res, next) => {
   try {
     res.render("tasks/index", {
@@ -13,10 +14,12 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+//NEW
 router.get("/new", (req, res, next) => {
   res.render("tasks/new");
 });
 
+//CREATE
 router.post("/", async (req, res, next) => {
   try {
     await ctrl.tasksCtrl.createTask(req.body);

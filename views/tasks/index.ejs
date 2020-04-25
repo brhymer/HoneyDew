@@ -6,9 +6,32 @@
         <%-include("../partials/_errorAlert", {error: error})%>
     <%}%>
 
-    <% tasks.forEach((task) => {%>
-        <h2><%=task.title%></h2>
-        <% }) %> 
+    <a href="/tasks/new">Create New Task</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Due Date</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+                <th scope="col">Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%tasks.forEach((task) =>{%>
+                <tr>
+                    <th scope="row"><%=tasks.indexOf(task) + 1%></th>
+                    <td><a href="/tasks/show/<%=task.id%>"><%=task.title%></a></td>
+                    <td><%=task.dueDate.toDateString()%></td>
+                    <td><a class="btn btn-primary btn-sm" href="/tasks/edit/<%=task._id%>">Edit</a></td>
+                    <td><a class="btn btn-danger btn-sm" href="/tasks/edit/<%=task._id%>">Delete</a></td>
+                    <td><%=new Date(task.updatedAt).toDateString()%></td>
+                </tr>
+            <%})%>
+        </tbody>
+    </table>
 
 </main>
 
