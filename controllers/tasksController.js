@@ -1,6 +1,7 @@
 const db = require("../models");
 
-async function createTask(taskInformation) {
+async function createTask(taskInformation, userId) {
+  taskInformation.userId = userId;
   return await db.Task.create(taskInformation);
 }
 
@@ -15,6 +16,13 @@ async function getTaskById(id) {
   const thisTask = await db.Task.findById(id);
   thisTask.dueDate = adjustDateForTimeZone(thisTask.dueDate);
   return thisTask;
+}
+
+async function getTaskOwner(id) {
+  const thisTask = await db.Task.findById(id)
+    .populate({ path: "userId" })
+    .exec();
+  return thisTask.userId;
 }
 
 async function updateTaskById(id, modifiedTask) {
@@ -37,6 +45,7 @@ module.exports = {
   createTask,
   getTasks,
   getTaskById,
+  getTaskOwner,
   updateTaskById,
   deleteTaskById,
 };

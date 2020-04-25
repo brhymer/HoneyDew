@@ -6,6 +6,7 @@ const TaskSchema = mongoose.Schema(
     description: { type: String, required: true },
     complete: Boolean,
     dueDate: Date,
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );

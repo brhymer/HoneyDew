@@ -2,8 +2,8 @@
 
 <main>
     <h1>Tasks</h1>
-    <%if(locals.error) {%>
-        <%-include("../partials/_errorAlert", {error: error})%>
+    <%if(locals.errors) {%>
+        <%-include("../partials/_errorAlert", {errors: errors})%>
     <%}%>
 
     <a href="/tasks/new">Create New Task</a>
