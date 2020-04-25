@@ -1,15 +1,46 @@
 <%- include("../partials/_head") %>
 <main>
-  <h1>Spaces Index</h1>
+  <h1>Spaces</h1>
 
-  <% spaces.forEach((space) => { %>
-  <section>
-    <h4>
-      <a href="/spaces/<%= space._id %>"><%= space.name %></a>
-    </h4>
-  </section>
-  <% }) %>
-  <br />
-  <a href="/spaces/new">Add a new space</a>
+  <%if(locals.error) {%> <%-include('../partials/_errorAlert', {error: error})%>
+  <%}%>
+
+  <a href="/spaces/new">Create New Space</a>
+  <% if(spaces.length > 0){%>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+        <th scope="col">Updated</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% spaces.forEach((space) => { %>
+      <tr>
+        <th scope="row"><%=spaces.indexOf(space) + 1%></th>
+        <td><a href="/spaces/<%=space.id%>"><%=space.name%></a></td>
+        <td><a href="/spaces/<%=space.id%>"><%=space.description%></a></td>
+        <td>
+          <a class="bt btn-primary btn-sm" href="/spaces/<%=space._id%>/edit"
+            >Edit</a
+          >
+        </td>
+        <td>
+          <form action="/spaces/<%=space._id%>?_method=DELETE" method="POST">
+            <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+          </form>
+        </td>
+        <td><%= new Date(space.updatedAt).toDateString()%></td>
+      </tr>
+      <%})%>
+    </tbody>
+  </table>
+  <%} else {%>
+  <p>No spaces exist, please see a physicist</p>
+  <% } %>
 </main>
 <%- include("../partials/_footer") %>
