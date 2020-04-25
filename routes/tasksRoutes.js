@@ -43,4 +43,42 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+//EDIT
+router.get("/edit/:id", async (req, res, next) => {
+  try {
+    const thisTask = await ctrl.tasksCtrl.getTaskById(req.params.id);
+    res.render("tasks/edit", {
+      title: "Edit Task",
+      task: thisTask,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+//PUT
+router.put("/:id", async (req, res, next) => {
+  try {
+    const updatedTask = await ctrl.tasksCtrl.updateTaskById(
+      req.params.id,
+      req.body
+    );
+    res.render("tasks/show", {
+      task: updatedTask,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+//DELETE
+router.delete("/:id", async (req, res, next) => {
+  try {
+    await ctrl.tasksCtrl.deleteTaskById(req.params.id);
+    res.redirect("/tasks");
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

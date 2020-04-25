@@ -1,4 +1,6 @@
 <%- include("../partials/_head", {title: task.title}) %>
     <h1><%=task.title%></h1>
+    <p><%=task.description%></p>
+    <p>Due: <%=task.dueDate.toLocaleDateString()%></p>
 
 <%- include("../partials/_footer")%>

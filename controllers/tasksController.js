@@ -5,11 +5,38 @@ async function createTask(taskInformation) {
 }
 
 async function getTasks(searchParameters) {
-  return await db.Task.find(searchParameters);
+  const tasks = await db.Task.find(searchParameters);
+  tasks.map((task) => (task.dueDate = adjustDateForTimeZone(task.dueDate)));
+
+  return tasks;
 }
 
 async function getTaskById(id) {
-  return await db.Task.findById(id);
+  const thisTask = await db.Task.findById(id);
+  thisTask.dueDate = adjustDateForTimeZone(thisTask.dueDate);
+  return thisTask;
 }
 
-module.exports = { createTask, getTasks, getTaskById };
+async function updateTaskById(id, modifiedTask) {
+  return await db.Task.findByIdAndUpdate(id, modifiedTask, { new: true });
+}
+
+async function deleteTaskById(id) {
+  return await db.Task.findByIdAndDelete(id);
+}
+
+function adjustDateForTimeZone(dateObject) {
+  // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
+  //Allows us to move our dates to HTML while adapting for timezones correctly
+  const tempDate = new Date(dateObject);
+  const offset = tempDate.getTimezoneOffset();
+  return new Date(tempDate.getTime() + offset * 60000);
+}
+
+module.exports = {
+  createTask,
+  getTasks,
+  getTaskById,
+  updateTaskById,
+  deleteTaskById,
+};
