@@ -1,26 +1,31 @@
 <%- include("../partials/_head") %>
 <main>
   <h1>Modify this Space</h1>
+  <%if(locals.error) {%> <%-include("../partials/_errorAlert", {error: error})%>
+  <%}%>
   <form action="/spaces/<%= space._id %>?_method=PUT" method="POST">
     <!-- Name -->
-    <label for="name">Name: </label>
-    <input type="text" id="name" name="name" value="<%=space.name%>" />
+    <div class="mt-3">
+      <label class="d-block" for="name">Name: </label>
+      <input type="text" id="name" name="name" value="<%=space.name%>" />
+    </div>
     <!-- Description -->
-    <label for="description">Description: </label>
-    <input
-      type="text"
-      id="description"
-      name="description"
-      value="<%=space.description%>"
-    />
+    <div class="mt-3">
+      <label class="d-block" for="description">Description: </label>
+      <textarea name="description" id="description" rows="5" cols="50">
+<%=space.description%></textarea
+      >
+    </div>
     <!-- Features, may need to be modified to accept object -->
-    <label for="features">Features (optional): </label>
-    <input
-      type="object"
-      id="features"
-      name="features"
-      value="<%=space.features%>"
-    />
+    <div class="mt-3">
+      <label class="d-block" for="features">Features (optional): </label>
+      <input
+        type="object"
+        id="features"
+        name="features"
+        value="<%=space.features%>"
+      />
+    </div>
     <!-- To do: add fields for Spaces, Tasks, Users -->
 
     <!-- Submit button -->
