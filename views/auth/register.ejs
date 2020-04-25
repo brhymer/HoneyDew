@@ -2,8 +2,8 @@
 </main>
 <h1>Register Here!</h1>
     
-<% if(locals.error){%>
-    <%- include("../partials/_errorAlert", {error: error})%>
+<% if(locals.errors){%>
+    <%- include("../partials/_errorAlert", {errors: errors})%>
 <%}%>
 
     <form action="/auth/register" method="POST">
