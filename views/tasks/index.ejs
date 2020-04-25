@@ -26,7 +26,7 @@
                     <td><a href="/tasks/<%=task.id%>"><%=task.title%></a></td>
                     <td><%=task.dueDate.toDateString()%></td>
                     <td><a class="btn btn-primary btn-sm" href="/tasks/edit/<%=task._id%>">Edit</a></td>
-                    <td><a class="btn btn-danger btn-sm" href="/tasks/edit/<%=task._id%>">Delete</a></td>
+                    <td><form action="/tasks/<%=task._id%>?_method=DELETE" method="POST"><button class="btn btn-danger btn-sm"type="submit">Delete</button></form></td>
                     <td><%=new Date(task.updatedAt).toDateString()%></td>
                 </tr>
             <%})%>
