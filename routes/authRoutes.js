@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const ctrl = require("../controllers");
 const bcrypt = require("bcryptjs");
+const { check, validationResult } = require("express-validator");
 
 router.get("/login", (req, res, next) => {
   res.render("auth/login", { title: "Login" });
