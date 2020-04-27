@@ -2,13 +2,18 @@ const db = require("../models");
 
 async function createTask(taskInformation, userId) {
   taskInformation.userId = userId;
-  return await db.Task.create(taskInformation);
+  const [newTask, thisUser] = await Promise.all([
+    db.Task.create(taskInformation),
+    db.User.findById(userId),
+  ]);
+  thisUser.tasks.push(newTask);
+  await thisUser.save();
+  return newTask;
 }
 
 async function getTasks(searchParameters) {
   const tasks = await db.Task.find(searchParameters);
   tasks.map((task) => (task.dueDate = adjustDateForTimeZone(task.dueDate)));
-
   return tasks;
 }
 
@@ -29,8 +34,14 @@ async function updateTaskById(id, modifiedTask) {
   return await db.Task.findByIdAndUpdate(id, modifiedTask, { new: true });
 }
 
-async function deleteTaskById(id) {
-  return await db.Task.findByIdAndDelete(id);
+async function deleteTaskById(taskId, userId) {
+  const [deletedTask, thisUser] = await Promise.all([
+    db.Task.findByIdAndDelete(taskId),
+    db.User.findById(userId),
+  ]);
+  thisUser.tasks.remove(taskId);
+  await thisUser.save();
+  return deletedTask;
 }
 
 function adjustDateForTimeZone(dateObject) {

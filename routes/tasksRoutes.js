@@ -6,9 +6,12 @@ const ctrl = require("../controllers");
 router.get("/", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
+    const thisUser = await ctrl.authCtrl.getUserWithTasks(
+      req.session.currentUser
+    );
     res.render("tasks/index", {
       title: "Tasks",
-      tasks: await ctrl.authCtrl.getUserWithTasks(req.session.currentUser),
+      tasks: thisUser.tasks,
     });
   } catch (err) {
     next(err);
@@ -88,7 +91,7 @@ router.put("/:id", async (req, res, next) => {
 //DELETE
 router.delete("/:id", async (req, res, next) => {
   try {
-    await ctrl.tasksCtrl.deleteTaskById(req.params.id);
+    await ctrl.tasksCtrl.deleteTaskById(req.params.id, req.session.currentUser);
     res.redirect("/tasks");
   } catch (err) {
     next(err);
