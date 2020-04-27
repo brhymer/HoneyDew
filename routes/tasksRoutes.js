@@ -46,7 +46,7 @@ router.post(
         imgObject
       );
       //This deletes our image from the server
-      fs.unlinkSync(req.file.path);
+      if (req.file) fs.unlinkSync(req.file.path);
       res.redirect("/tasks");
     } catch (err) {
       next(err);
@@ -115,8 +115,8 @@ router.delete("/:id", async (req, res, next) => {
       req.params.id,
       req.session.currentUser
     );
-    console.log(deletedTask.imgPublicId);
-    console.log(await cloudinary.deleteFromCloudinary(deletedTask.imgPublicId));
+    if (deletedTask.imgUrl)
+      await cloudinary.deleteFromCloudinary(deletedTask.imgPublicId);
     res.redirect("/tasks");
   } catch (err) {
     next(err);
