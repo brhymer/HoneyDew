@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const connectionString = "mongodb://localhost:27017/honeydew-core";
+const connectionString =
+  process.env.MONGODB_URI || "mongodb://localhost:27017/honeydew-core";
 const configOptions = {
   useNewUrlParser: true,
   useCreateIndex: true,

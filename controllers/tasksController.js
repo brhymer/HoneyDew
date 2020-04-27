@@ -2,6 +2,7 @@ const db = require("../models");
 
 async function createTask(taskInformation, userId) {
   taskInformation.userId = userId;
+  taskInformation.dueDate = adjustDateForTimeZone(taskInformation.dueDate);
   const [newTask, thisUser] = await Promise.all([
     db.Task.create(taskInformation),
     db.User.findById(userId),
