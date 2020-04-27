@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const ctrl = require("../controllers");
+const imageUpload = require("../middleware/multer");
+const cloudinary = require("../middleware/cloudinary");
+const fs = require("fs");
 
 //INDEX
 router.get("/", async (req, res, next) => {
@@ -27,19 +30,34 @@ router.get("/new", (req, res, next) => {
 });
 
 //CREATE
-router.post("/", async (req, res, next) => {
-  if (!req.session.currentUser) return res.redirect("/auth/login");
-  try {
-    await ctrl.tasksCtrl.createTask(req.body, req.session.currentUser);
-    res.redirect("/tasks");
-  } catch (err) {
-    next(err);
+router.post(
+  "/",
+  imageUpload.multerUploads.single("imgFile"),
+  async (req, res, next) => {
+    if (!req.session.currentUser) return res.redirect("/auth/login");
+    try {
+      let imgObject;
+      if (req.file) {
+        imgObject = await cloudinary.uploadToCloudinary(req.file.path);
+      } else imgObject = "";
+      await ctrl.tasksCtrl.createTask(
+        req.body,
+        req.session.currentUser,
+        imgObject
+      );
+      //This deletes our image from the server
+      fs.unlinkSync(req.file.path);
+      res.redirect("/tasks");
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 //SHOW
 router.get("/:id", async (req, res, next) => {
   //If you're not logged in, you don't get to see
+
   if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
     const thisTask = await ctrl.tasksCtrl.getTaskById(req.params.id);
@@ -93,7 +111,12 @@ router.put("/:id", async (req, res, next) => {
 //DELETE
 router.delete("/:id", async (req, res, next) => {
   try {
-    await ctrl.tasksCtrl.deleteTaskById(req.params.id, req.session.currentUser);
+    const deletedTask = await ctrl.tasksCtrl.deleteTaskById(
+      req.params.id,
+      req.session.currentUser
+    );
+    console.log(deletedTask.imgPublicId);
+    console.log(await cloudinary.deleteFromCloudinary(deletedTask.imgPublicId));
     res.redirect("/tasks");
   } catch (err) {
     next(err);

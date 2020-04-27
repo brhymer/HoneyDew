@@ -1,14 +1,18 @@
 const db = require("../models");
+const fs = require("fs");
 
-async function createTask(taskInformation, userId) {
+async function createTask(taskInformation, userId, imageObject) {
   taskInformation.userId = userId;
   taskInformation.dueDate = adjustDateForTimeZone(taskInformation.dueDate);
+  taskInformation.imgUrl = imageObject.url;
+  taskInformation.imgPublicId = imageObject.public_id;
   const [newTask, thisUser] = await Promise.all([
     db.Task.create(taskInformation),
     db.User.findById(userId),
   ]);
   thisUser.tasks.push(newTask);
   await thisUser.save();
+
   return newTask;
 }
 
