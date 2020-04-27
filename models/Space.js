@@ -16,7 +16,7 @@ const SpaceSchema = new mongoose.Schema(
     // These properties still need fleshing out
     Spaces: [],
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    Tasks: [],
+    Tasks: { type: mongoose.Schema.Types.ObjectId, ref: "Task" },
   },
   { timestamps: true }
 );
