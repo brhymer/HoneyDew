@@ -2,93 +2,106 @@ const express = require("express");
 const router = express.Router();
 const ctrl = require("../controllers");
 
-// router.get("/", (req, res) => {
+// router.get("/", (req, res, next) => {
 //   res.render("spaces/index");
 // });
 
 // path is '/spaces'
 
 // Index route
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
-    const allSpaces = await ctrl.spacesCtrl.getSpaces();
+    const thisUser = await ctrl.authCtrl.getUserWithSpaces(
+      req.session.currentUser
+    );
     res.render("spaces/index", {
       title: "Your spaces",
-      spaces: allSpaces,
+      spaces: thisUser.spaces,
     });
   } catch (err) {
-    return res.send(err);
+    next(err);
   }
 });
 
 // New route
-router.get("/new", async (req, res) => {
-  // this route will need to access the db in the future
+router.get("/new", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
     res.render("spaces/new", {
-      title: "New home",
+      title: "New space",
     });
   } catch (err) {
-    return res.send(err);
+    next(err);
   }
 });
 
 // Create route
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
-    const newSpace = await ctrl.spacesCtrl.createSpace(req.body);
+    const newSpace = await ctrl.spacesCtrl.createSpace(
+      req.body,
+      req.session.currentUser
+    );
     res.redirect(`/spaces/${newSpace._id}`);
   } catch (err) {
-    return res.send(err);
+    next(err);
   }
 });
 
 // Show route
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
   try {
-    const getSpaceById = await ctrl.spacesCtrl.getSpaceById(req.params.id);
+    if (!req.session.currentUser) return res.redirect("/auth/login");
+    const thisSpace = await ctrl.spacesCtrl.getSpaceById(req.params.id);
     res.render("spaces/show", {
       title: "Details on this space", // edit to make dynamic
-      space: getSpaceById,
+      space: thisSpace,
     });
   } catch (err) {
-    return res.send(err);
+    next(err);
   }
 });
 
 // Edit route
-router.get("/:id/edit", async (req, res) => {
+router.get("/:id/edit", async (req, res, next) => {
   try {
+    if (!req.session.currentUser) return res.redirect("/auth/login");
     const foundSpace = await ctrl.spacesCtrl.getSpaceById(req.params.id);
     res.render("./spaces/edit", {
       title: "Edit this Space",
       space: foundSpace,
     });
   } catch (err) {
-    return res.send(err);
+    next(err);
   }
 });
 
 // Update route
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req, res, next) => {
   try {
+    if (!req.session.currentUser) return res.redirect("/auth/login");
     const updatedSpace = await ctrl.spacesCtrl.updateSpaceById(
       req.params.id,
       req.body
     );
     res.redirect(`/spaces/${updatedSpace._id}`);
   } catch (err) {
-    return res.send(err);
+    next(err);
   }
 });
 
 // Delete route
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res, next) => {
   try {
-    const deletedSpace = await ctrl.spacesCtrl.deleteSpaceById(req.params.id);
+    const deletedSpace = await ctrl.spacesCtrl.deleteSpaceById(
+      req.params.id,
+      req.session.currentUser
+    );
     res.redirect("/spaces");
   } catch (err) {
-    return res.send(err);
+    next(err);
   }
 });
 

@@ -8,6 +8,10 @@ async function getUserWithTasks(id) {
   return await db.User.findById(id).populate({ path: "tasks" }).exec();
 }
 
+async function getUserWithSpaces(id) {
+  return await db.User.findById(id).populate({ path: "spaces" }).exec();
+}
+
 async function createUser(userData) {
   return await db.User.create(userData);
 }
@@ -26,6 +30,7 @@ function formatValidationErrorMessage(errors) {
 module.exports = {
   getUser,
   getUserWithTasks,
+  getUserWithSpaces,
   createUser,
   formatValidationErrorMessage,
 };
