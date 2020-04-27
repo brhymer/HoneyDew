@@ -8,7 +8,7 @@ router.get("/", async (req, res, next) => {
   try {
     res.render("tasks/index", {
       title: "Tasks",
-      tasks: await ctrl.tasksCtrl.getTasks({ userId: req.session.currentUser }),
+      tasks: await ctrl.authCtrl.getUserWithTasks(req.session.currentUser),
     });
   } catch (err) {
     next(err);

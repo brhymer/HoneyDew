@@ -4,6 +4,10 @@ async function getUser(searchParameters) {
   return await db.User.findOne(searchParameters);
 }
 
+async function getUserWithTasks(id) {
+  return await db.User.findById(id).populate({ path: "tasks" }).exec();
+}
+
 async function createUser(userData) {
   return await db.User.create(userData);
 }
@@ -19,4 +23,9 @@ function formatValidationErrorMessage(errors) {
   return formattedErrors;
 }
 
-module.exports = { getUser, createUser, formatValidationErrorMessage };
+module.exports = {
+  getUser,
+  getUserWithTasks,
+  createUser,
+  formatValidationErrorMessage,
+};

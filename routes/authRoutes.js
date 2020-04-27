@@ -31,6 +31,7 @@ router.post("/login", async (req, res, next) => {
 
     // create session
     req.session.currentUser = user._id;
+    req.session.username = user.username;
     res.redirect("/");
   } catch (err) {
     next(err);

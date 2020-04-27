@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema(
       lowercase: true,
     },
     password: { type: String },
+    tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
   },
   { timestamps: true }
 );
