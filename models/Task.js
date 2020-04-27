@@ -4,8 +4,8 @@ const TaskSchema = mongoose.Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
-    complete: Boolean,
-    dueDate: Date,
+    complete: { type: Boolean, default: false },
+    dueDate: { type: Date, required: true },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }

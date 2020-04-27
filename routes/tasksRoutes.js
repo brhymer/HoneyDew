@@ -62,6 +62,7 @@ router.get("/:id", async (req, res, next) => {
 
 //EDIT
 router.get("/edit/:id", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
     const thisTask = await ctrl.tasksCtrl.getTaskById(req.params.id);
     res.render("tasks/edit", {
@@ -75,6 +76,7 @@ router.get("/edit/:id", async (req, res, next) => {
 
 //PUT
 router.put("/:id", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
     const updatedTask = await ctrl.tasksCtrl.updateTaskById(
       req.params.id,
