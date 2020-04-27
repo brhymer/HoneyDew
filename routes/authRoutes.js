@@ -31,6 +31,7 @@ router.post("/login", async (req, res, next) => {
 
     // create session
     req.session.currentUser = user._id;
+    req.session.username = user.username;
     res.redirect("/");
   } catch (err) {
     next(err);
@@ -87,5 +88,14 @@ router.post(
     }
   }
 );
+
+router.delete("/logout", async (req, res, next) => {
+  try {
+    await req.session.destroy();
+    res.redirect("/auth/login");
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;
