@@ -1,12 +1,9 @@
-<%- include("../partials/_head") %>
+<%- include("../partials/_head")%>
 <main>
   <h1>Spaces</h1>
 
-  <%if(locals.error) {%> <%-include('../partials/_errorAlert', {error: error})%>
-  <%}%>
-
-  <a href="/spaces/new">Create New Space</a>
-  <% if(spaces.length > 0){%>
+  <%if(locals.errors) {%> <%-include("../partials/_errorAlert", {errors:
+  errors})%> <%}%> <%if(spaces.length > 0){%>
   <table class="table">
     <thead>
       <tr>
@@ -42,5 +39,6 @@
   <%} else {%>
   <p>No spaces exist, please see a physicist</p>
   <% } %>
+  <a href="/spaces/new">Create New Space</a>
 </main>
 <%- include("../partials/_footer") %>

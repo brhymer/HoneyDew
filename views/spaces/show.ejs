@@ -18,6 +18,36 @@
     </a>
   </section>
 
+  <!-- the following section is intended for adding tasks into spaces. the leading '<' characters on ejs strings 
+have been deleted so that it will comment out  -->
+
+  <!-- <section>
+    % if (spaces.tasks.length > 0) { %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Complete?</th>
+          <th scope="col">Due Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        % spaces.tasks.forEach((task) => { %>
+        <tr>
+          <th scope="row">%=tasks.indexOf(task) + 1%></th>
+          <td><a href="/tasks/%=task.id  %>">%=task.title%></a></td>
+          <td><a href="/tasks/%=task.id %>">%=task.description%></a></td>
+          <td>insert a toggle or yes/no here</td>
+          <td>%= new Date(task.dueDate)toDateString()%></td>
+        </tr>
+        % }) %>
+      </tbody>
+    </table>
+    % }) %>
+  </section> -->
+
   <a href="/spaces">Back to index page</a>
 </main>
 <%- include("../partials/_footer") %>

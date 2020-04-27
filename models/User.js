@@ -12,6 +12,7 @@ const UserSchema = new mongoose.Schema(
     },
     password: { type: String },
     tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
+    spaces: [{ type: mongoose.Schema.Types.ObjectId, ref: "Space" }],
   },
   { timestamps: true }
 );
