@@ -89,4 +89,13 @@ router.post(
   }
 );
 
+router.delete("/logout", async (req, res, next) => {
+  try {
+    await req.session.destroy();
+    res.redirect("/auth/login");
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;
