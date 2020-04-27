@@ -9,6 +9,7 @@ const TaskSchema = mongoose.Schema(
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     spaceId: { type: mongoose.Schema.Types.ObjectId, ref: "Space" },
     imgUrl: String,
+    imgPublicId: String,
   },
   { timestamps: true }
 );

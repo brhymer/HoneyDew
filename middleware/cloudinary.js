@@ -16,4 +16,13 @@ function uploadToCloudinary(imagePath) {
   });
 }
 
-module.exports = { cloudinary, uploadToCloudinary };
+function deleteFromCloudinary(imageId) {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy(imageId, (err, result) => {
+      if (err) return reject(err);
+      return resolve(result);
+    });
+  });
+}
+
+module.exports = { cloudinary, uploadToCloudinary, deleteFromCloudinary };
