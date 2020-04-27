@@ -7,6 +7,8 @@ const TaskSchema = mongoose.Schema(
     complete: { type: Boolean, default: false },
     dueDate: { type: Date, required: true },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    spaceId: { type: mongoose.Schema.Types.ObjectId, ref: "Space" },
+    imgUrl: String,
   },
   { timestamps: true }
 );
