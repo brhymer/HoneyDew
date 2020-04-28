@@ -9,6 +9,17 @@ $(`#deleteTaskModal`).on("show.bs.modal", (event) => {
   deleteForm.setAttribute("action", `/tasks/${targetTaskId}?_method=DELETE`);
 });
 
+$(`#deleteSpaceModal`).on("show.bs.modal", (event) => {
+  const targetSpace = event.relatedTarget;
+
+  document.querySelector(
+    "#delete-space-name"
+  ).innerHTML = targetSpace.getAttribute("data-spacename");
+  const deleteForm = document.querySelector("#delete-space-form");
+  const targetSpaceId = targetSpace.getAttribute("data-spaceid");
+  deleteForm.setAttribute("action", `/spaces/${targetSpaceId}?_method=DELETE`);
+});
+
 $(`#showTaskModal`).on("show.bs.modal", (event) => {
   const targetTask = event.relatedTarget;
 

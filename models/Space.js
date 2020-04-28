@@ -11,12 +11,10 @@ const SpaceSchema = new mongoose.Schema(
     },
     features: {
       any: {},
-      // To Do: expand on what type of properties 'features' will have
     },
-    // These properties still need fleshing out
-    Spaces: [],
+    spaces: [{ type: mongoose.Schema.Types.ObjectId, ref: "Space" }],
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    Tasks: [], // I changed this back an empty list so it can be pushed into
+    tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
   },
   { timestamps: true }
 );

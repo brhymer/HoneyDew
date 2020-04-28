@@ -22,6 +22,15 @@
             <button class="btn btn-primary btn-sm" type="submit">Update Task</button>
             <a class="btn btn-danger btn-sm" href="/tasks/<%=task.id%>">Cancel</a>
         </div>
+        <div class="mt-3">
+            <h6>Add this task to a space?</h6>
+            <select name="spaceId" id="spaceId">
+              <option value="" selected>Please choose a space</option>
+              <% spaces.forEach((space) => { %>
+              <option value="<%=space._id%>" <%=thisSpace.toString()===space._id.toString() ? "selected" : ""%>><%=space.name%></option>
+              <% }) %>
+            </select>
+          </div>
     </form>
 
 </main>

@@ -43,11 +43,13 @@ router.post(
   imageUpload.multerUploads.single("imgFile"),
   async (req, res, next) => {
     if (!req.session.currentUser) return res.redirect("/auth/login");
+
     try {
       let imgObject;
       if (req.file) {
         imgObject = await cloudinary.uploadToCloudinary(req.file.path);
       } else imgObject = "";
+
       await ctrl.tasksCtrl.createTask(
         req.body,
         req.session.currentUser,
@@ -91,9 +93,15 @@ router.get("/edit/:id", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
     const thisTask = await ctrl.tasksCtrl.getTaskById(req.params.id);
+    const thisSpace = thisTask.space ? thisTask.space : "NA";
+    const userSpaces = await ctrl.authCtrl.getUserWithSpaces(
+      req.session.currentUser
+    );
     res.render("tasks/edit", {
       title: "Edit Task",
       task: thisTask,
+      spaces: userSpaces.spaces,
+      thisSpace: thisSpace,
     });
   } catch (err) {
     next(err);
