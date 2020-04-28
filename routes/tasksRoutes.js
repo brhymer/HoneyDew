@@ -22,11 +22,19 @@ router.get("/", async (req, res, next) => {
 });
 
 //NEW
-router.get("/new", (req, res, next) => {
+router.get("/new", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
-  res.render("tasks/new", {
-    title: "New Task",
-  });
+  try {
+    const userSpaces = await ctrl.authCtrl.getUserWithSpaces(
+      req.session.currentUser
+    );
+    res.render("tasks/new", {
+      title: "New Task",
+      spaces: userSpaces.spaces,
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 //CREATE
@@ -46,7 +54,7 @@ router.post(
         imgObject
       );
       //This deletes our image from the server
-      if (req.file) fs.unlinkSync(req.file.path);
+      if (req.file) res.unlinkSync(req.file.path);
       res.redirect("/tasks");
     } catch (err) {
       next(err);
