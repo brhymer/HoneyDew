@@ -19,18 +19,11 @@
       <% spaces.forEach((space) => { %>
       <tr>
         <th scope="row"><%=spaces.indexOf(space) + 1%></th>
-        <td><a href="/spaces/<%=space.id%>"><%=space.name%></a></td>
-        <td><a href="/spaces/<%=space.id%>"><%=space.description%></a></td>
-        <td>
-          <a class="bt btn-primary btn-sm" href="/spaces/<%=space._id%>/edit"
-            >Edit</a
-          >
-        </td>
-        <td>
-          <form action="/spaces/<%=space._id%>?_method=DELETE" method="POST">
-            <button class="btn btn-danger btn-sm" type="submit">Delete</button>
-          </form>
-        </td>
+        <td><a href="/spaces/<%=space._id%>"><%=space.name%></a></td>
+        <td><a href="/spaces/<%=space._id%>"><%=space.description%></a></td>
+        <td><a class="btn btn-primary btn-sm" href="/spaces/<%=space._id%>/edit">Edit</a></td>
+        <td><button class="btn btn-danger btn-sm" type="submit" data-toggle="modal" data-target="#deleteSpaceModal"
+            data-spaceId="<%=space._id%>" data-spaceName="<%=space.name%>">Delete</button></td>
         <td><%= new Date(space.updatedAt).toDateString()%></td>
       </tr>
       <%})%>
@@ -39,6 +32,7 @@
   <%} else {%>
   <p>No spaces exist, please see a physicist</p>
   <% } %>
-  <a href="/spaces/new">Create New Space</a>
+  <a class="btn btn-info btn-block py-2" href="/spaces/new">+ Add New Space</a>
 </main>
+<%- include ("../partials/_deleteSpaceModal")%>
 <%- include("../partials/_footer") %>
