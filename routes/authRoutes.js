@@ -89,6 +89,20 @@ router.post(
   }
 );
 
+// Find all users
+// router.get("/users", async (req, res, next) => {
+//   if (!req.session.currentUser) return res.redirect("/auth/login");
+//   try {
+//     const allUsers = await ctrl.authCtrl.getAllUsers;
+//     res.render("auth/users", {
+//       title: "All users",
+//       users: allUsers,
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// });
+
 router.delete("/logout", async (req, res, next) => {
   try {
     await req.session.destroy();
