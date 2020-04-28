@@ -13,8 +13,13 @@ mongoose
   .then(() => console.log("You have successfully connected to MongoDB..."))
   .catch((err) => console.log(err));
 
+function _closeConnection() {
+  mongoose.connection.close();
+}
+
 module.exports = {
   mongooseConnection: mongoose.connection,
+  _closeConnection,
   User: require("./User"),
   Space: require("./Space"),
   Task: require("./Task"),
