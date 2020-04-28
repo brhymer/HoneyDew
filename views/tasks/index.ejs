@@ -23,7 +23,7 @@
             <%tasks.forEach((task) =>{%>
                 <tr>
                     <th scope="row"><%=tasks.indexOf(task) + 1%></th>
-                    <td><button class="btn btn-primary btn-sm" type="submit" data-toggle="modal" data-target="#showTaskModal"
+                    <td><button class="btn btn-outline-primary btn-sm" type="submit" data-toggle="modal" data-target="#showTaskModal"
                         data-taskId="<%=task._id%>" data-taskTitle="<%=task.title%>"><%=task.title%></button></td>
                     <td><%=task.dueDate.toDateString()%></td>
                     <td><a class="btn btn-primary btn-sm" href="/tasks/edit/<%=task._id%>">Edit</a></td>
@@ -38,7 +38,7 @@
     <% } else {%>
         <p>You don't have any tasks, ya lazy bum</p>
     <% } %> 
-    <div class="d-flex justify-content-center bg-light"><a href="/tasks/new"> + Add New Task</a></div>
+    <a class="btn btn-info btn-block py-2" href="/tasks/new"> + Add New Task</a>
 
 </main>
 <%- include ("../partials/_deleteTaskModal")%>
