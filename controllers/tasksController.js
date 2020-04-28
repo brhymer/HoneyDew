@@ -6,13 +6,14 @@ async function createTask(taskInformation, userId, imageObject) {
   taskInformation.dueDate = adjustDateForTimeZone(taskInformation.dueDate);
   taskInformation.imgUrl = imageObject.url;
   taskInformation.imgPublicId = imageObject.public_id;
-  const [newTask, thisUser] = await Promise.all([
+  const [newTask, thisUser, thisSpace] = await Promise.all([
     db.Task.create(taskInformation),
     db.User.findById(userId),
+    db.Space.findById(taskInformation.space), // I added this
   ]);
   thisUser.tasks.push(newTask);
   await thisUser.save();
-
+  thisSpace.Tasks.push(taskInformation); // I added this
   return newTask;
 }
 

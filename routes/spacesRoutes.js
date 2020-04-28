@@ -55,9 +55,13 @@ router.get("/:id", async (req, res, next) => {
   try {
     if (!req.session.currentUser) return res.redirect("/auth/login");
     const thisSpace = await ctrl.spacesCtrl.getSpaceById(req.params.id);
+    const getTasks = await ctrl.authCtrl.getUserWithTasks(
+      req.session.currentUser
+    );
     res.render("spaces/show", {
       title: "Details on this space", // edit to make dynamic
       space: thisSpace,
+      tasks: getTasks,
     });
   } catch (err) {
     next(err);

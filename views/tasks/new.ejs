@@ -1,33 +1,47 @@
 <%- include("../partials/_head")%>
 
 <main>
-    <h1>Tasks</h1>
-    <%if(locals.error) {%>
-        <%-include("../partials/_errorAlert", {error: error})%>
-    <%}%>
-    <form action="/tasks" enctype="multipart/form-data" method="POST">
-        <div class="mt-3">
-            <label class="d-block" for="title">Title</label>
-            <input type="text" id="title" name="title" required>
-        </div>
-        <div class="mt-3">
-            <label class="d-block" for="description">Description</label>
-            <textarea name="description" id="description" rows="5" cols="50" placeholder="Describe your task here..."></textarea>
-        </div>
-        <div class="mt-3">
-            <label class="d-block" for="dueDate">Due Date:</label>
-            <input type="date" id="dueDate" name="dueDate" required>
-        </div>
-        <div class="mt-3">
-            <label class="d-block" for="imgFile">Include Image (optional):</label>
-            <input type="file" accept ="image/*", id="imgFile" name="imgFile">
-        </div>
-        <div class="mt-3">
-            <button class="btn btn-primary btn-sm" type="submit">Create Task</button>
-            <a class="btn btn-danger btn-sm" href="/tasks">Cancel</a>
-        </div>
-    </form>
+  <h1>Tasks</h1>
+  <%if(locals.error) {%> <%-include("../partials/_errorAlert", {error: error})%>
+  <%}%>
+  <form action="/tasks" enctype="multipart/form-data" method="POST">
+    <div class="mt-3">
+      <label class="d-block" for="title">Title</label>
+      <input type="text" id="title" name="title" required />
+    </div>
+    <div class="mt-3">
+      <label class="d-block" for="description">Description</label>
+      <textarea
+        name="description"
+        id="description"
+        rows="5"
+        cols="50"
+        placeholder="Describe your task here..."
+      ></textarea>
+    </div>
+    <div class="mt-3">
+      <label class="d-block" for="dueDate">Due Date:</label>
+      <input type="date" id="dueDate" name="dueDate" required />
+    </div>
+    <div class="mt-3">
+      <label class="d-block" for="imgFile">Include Image (optional):</label>
+      <input type="file" accept="image/*" , id="imgFile" name="imgFile" />
+    </div>
+    <div class="mt-3">
+        <!-- I added this area -->
+      <h6>Add this task to a space?</h6>
+      <select name="space" id="space">
+        <option value="" selected>Please choose a space</option>
+        <% spaces.forEach((space) => { %>
+        <option value="<%=space._id%>"><%=space.name%></option>
+        <% }) %>
+      </select>
 
+    <div class="mt-3">
+      <button class="btn btn-primary btn-sm" type="submit">Create Task</button>
+      <a class="btn btn-danger btn-sm" href="/tasks">Cancel</a>
+    </div>
+  </form>
 </main>
 
 <%- include("../partials/_footer")%>
