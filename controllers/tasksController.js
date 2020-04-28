@@ -9,7 +9,7 @@ async function createTask(taskInformation, userId, imageObject) {
   const [newTask, thisUser, thisSpace] = await Promise.all([
     db.Task.create(taskInformation),
     db.User.findById(userId),
-    db.Space.findById(taskInformation.space),
+    db.Space.findById(taskInformation.spaceId),
   ]);
   thisUser.tasks.push(newTask);
   await thisUser.save();
@@ -78,6 +78,11 @@ async function deleteTaskById(taskId, userId) {
     db.Task.findByIdAndDelete(taskId),
     db.User.findById(userId),
   ]);
+  const thisSpace = await db.Space.findById(deletedTask.spaceId);
+  if (thisSpace) {
+    thisSpace.tasks.remove(taskId);
+    await thisSpace.save();
+  }
   thisUser.tasks.remove(taskId);
   await thisUser.save();
   return deletedTask;

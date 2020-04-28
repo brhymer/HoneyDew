@@ -116,7 +116,6 @@ router.put("/:id", async (req, res, next) => {
       req.params.id,
       req.body
     );
-    return res.send(req.body);
     res.render("tasks/show", {
       task: updatedTask,
     });
