@@ -16,6 +16,11 @@ async function createUser(userData) {
   return await db.User.create(userData);
 }
 
+// async function getAllUsers() {
+//   // This is for grabbing all users.  What parameter to use?
+//   return await db.User.find();
+// }
+
 function formatValidationErrorMessage(errors) {
   const formattedErrors = [];
   errors.forEach((error) => {
@@ -32,5 +37,6 @@ module.exports = {
   getUserWithTasks,
   getUserWithSpaces,
   createUser,
+  // getAllUsers,
   formatValidationErrorMessage,
 };
