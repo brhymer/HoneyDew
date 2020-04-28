@@ -88,6 +88,10 @@ async function deleteTaskById(taskId, userId) {
   return deletedTask;
 }
 
+async function deleteTasksByParent(parentTasks) {
+  await db.Task.deleteMany({ _id: { $in: parentTasks } });
+}
+
 function adjustDateForTimeZone(dateObject) {
   // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
   //Allows us to move our dates to HTML while adapting for timezones correctly
@@ -103,4 +107,5 @@ module.exports = {
   getTaskOwner,
   updateTaskById,
   deleteTaskById,
+  deleteTasksByParent,
 };

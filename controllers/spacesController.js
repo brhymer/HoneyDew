@@ -51,6 +51,7 @@ async function deleteSpaceById(spaceId, userId) {
     db.Space.findByIdAndDelete(spaceId),
     db.User.findById(userId),
   ]);
+  await db.Task.deleteMany({ _id: { $in: deletedSpace.tasks } });
   thisUser.spaces.remove(spaceId);
   await thisUser.save();
   return deletedSpace;
