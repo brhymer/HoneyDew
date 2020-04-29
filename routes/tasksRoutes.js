@@ -133,6 +133,23 @@ router.put(
   }
 );
 
+router.put("/complete/:id/:status", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
+  try {
+    let thisTask;
+    if (req.params.status === "false") {
+      thisTask = await ctrl.tasksCtrl.completeTask(req.params.id);
+    } else {
+      thisTask = await ctrl.tasksCtrl.uncompleteTask(req.params.id);
+    }
+
+    // return res.send(thisTask);
+    res.redirect(`/spaces/${thisTask.spaceId}`);
+  } catch (err) {
+    next(err);
+  }
+});
+
 //DELETE
 router.delete("/:id", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");

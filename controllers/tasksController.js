@@ -78,6 +78,14 @@ async function updateTaskById(taskId, modifiedTask, imageObject) {
   return updatedTask;
 }
 
+async function completeTask(taskId) {
+  return await db.Task.findByIdAndUpdate(taskId, { complete: true });
+}
+
+async function uncompleteTask(taskId) {
+  return await db.Task.findByIdAndUpdate(taskId, { complete: false });
+}
+
 async function deleteTaskById(taskId, userId) {
   const [deletedTask, thisUser] = await Promise.all([
     db.Task.findByIdAndDelete(taskId),
@@ -111,6 +119,8 @@ module.exports = {
   getTaskById,
   getTaskOwner,
   updateTaskById,
+  completeTask,
+  uncompleteTask,
   deleteTaskById,
   deleteTasksByParent,
 };

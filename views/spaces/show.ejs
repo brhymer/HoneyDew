@@ -23,6 +23,7 @@
           <thead>
               <tr>
                   <th scope="col">#</th>
+                  <th scope="col">Done</th>
                   <th scope="col">Title</th>
                   <th scope="col">Due Date</th>
                   <th scope="col">Edit</th>
@@ -34,6 +35,11 @@
               <%tasks.forEach((task) =>{%>
                   <tr>
                       <th scope="row"><%=tasks.indexOf(task) + 1%></th>
+                      <td><form action="/tasks/complete/<%=task._id%>/<%=task.complete%>?_method=PUT" method="POST">
+                        <button type="submit" ><i class="<%=task.complete ? "fas fa-check-circle" : "far fa-check-circle" %>"></i></button>
+                        </form>
+                    </td>
+                          
                       <td><button class="btn btn-outline-primary btn-sm" type="submit" data-toggle="modal" data-target="#showTaskModal"
                           data-taskId="<%=task._id%>"
                           data-taskTitle="<%=task.title%>"
