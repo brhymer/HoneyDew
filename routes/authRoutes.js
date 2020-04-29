@@ -15,7 +15,7 @@ router.post("/login", async (req, res, next) => {
     if (!user) {
       res.render("auth/login", {
         title: "Login",
-        errors: ["Invalid Credentials", "I just don't like you"],
+        errors: ["Invalid Credentials"],
       });
     }
 
@@ -44,7 +44,7 @@ router.get("/register", (req, res, next) => {
 
 router.post(
   "/register",
-  [check("email").isEmail(), check("password").isLength({ min: 8 })],
+  [check("email").isEmail(), check("password").isLength({ min: 12 })],
   async (req, res, next) => {
     try {
       //TODO Check that passwords match - form validation
@@ -102,6 +102,20 @@ router.post(
 //     next(err);
 //   }
 // });
+
+// User profile
+router.get("/myprofile", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
+  try {
+    const userData = await ctrl.authCtrl.findUser(req.session.currentUser);
+    res.render("auth/myprofile", {
+      title: "My Profile",
+      user: userData,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
 router.delete("/logout", async (req, res, next) => {
   try {

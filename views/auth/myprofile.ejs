@@ -1,0 +1,13 @@
+<%- include("../partials/_head")%>
+
+<h1>Customize your profile</h1>
+
+<p><b>Photo: </b><%= %></p>
+<!-- add photo here -->
+<p><b>Username: </b><%= user.username%></p>
+<p><b>Full name: </b><%= user.firstName%> <%= user.lastName%></p>
+<p><b>Email address: </b><%= user.email%></p>
+<p><b>Joined: </b></p>
+
+<%- include ("../partials/_deleteTaskModal")%> <%- include
+("../partials/_showTaskModal")%> <%- include("../partials/_footer")%>

@@ -4,6 +4,10 @@ async function getUser(searchParameters) {
   return await db.User.findOne(searchParameters);
 }
 
+async function findUser(id) {
+  return await db.User.findById(id);
+}
+
 async function getUserWithTasks(id) {
   return await db.User.findById(id).populate({ path: "tasks" }).exec();
 }
@@ -17,7 +21,7 @@ async function createUser(userData) {
 }
 
 // async function getAllUsers() {
-//   // This is for grabbing all users.  What parameter to use?
+//   // This is for grabbing all users.
 //   return await db.User.find();
 // }
 
@@ -34,6 +38,7 @@ function formatValidationErrorMessage(errors) {
 
 module.exports = {
   getUser,
+  findUser,
   getUserWithTasks,
   getUserWithSpaces,
   createUser,
