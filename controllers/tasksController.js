@@ -39,8 +39,12 @@ async function getTaskOwner(id) {
   return thisTask.userId;
 }
 
-async function updateTaskById(taskId, modifiedTask) {
+async function updateTaskById(taskId, modifiedTask, imageObject) {
   if (modifiedTask.spaceId === "") modifiedTask.spaceId = null;
+  if (modifiedTask.dueDate)
+    modifiedTask.dueDate = adjustDateForTimeZone(modifiedTask.dueDate);
+  modifiedTask.imgUrl = imageObject.url;
+  modifiedTask.imgPublicId = imageObject.public_id;
   const [updatedTask, startingSpace] = await Promise.all([
     db.Task.findByIdAndUpdate(taskId, modifiedTask, { new: true }),
     db.Space.findOne({ tasks: taskId })
@@ -48,6 +52,7 @@ async function updateTaskById(taskId, modifiedTask) {
       .exec(),
   ]);
 
+  //Combinations of spaces
   if (startingSpace && !modifiedTask.spaceId) {
     console.log(startingSpace);
     startingSpace.tasks.remove(taskId);

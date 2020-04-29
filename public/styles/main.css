@@ -1,8 +1,13 @@
-body {
+/* body {
   background-color: aqua;
 }
 
 main {
   background-color: white;
   height: 100vh;
+} */
+
+#show-task-image {
+  display: inline-block;
+  max-width: 100%;
 }
