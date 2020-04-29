@@ -32,7 +32,7 @@
       <select name="spaceId" id="spaceId">
         <option value="" selected>Please choose a space</option>
         <% spaces.forEach((space) => { %>
-        <option value="<%=space._id%>"><%=space.name%></option>
+        <option value="<%=space._id%>" <%=currentSpace !== null && space.id.toString() === currentSpace.id.toString() ? "selected" : ""%>><%=space.name%></option>
         <% }) %>
       </select>
     </div>

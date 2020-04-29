@@ -7,24 +7,21 @@ async function getSpaceOwner(id) {
   return thisSpace.userId;
 }
 
-// Index
-async function getSpaces() {
-  return await db.Space.find();
+async function getSpaces(searchParameters) {
+  return await db.Space.find(searchParameters);
 }
 
-// async function getFullSpaces will be needed here as spacesRoutes adds functionality
-
-// Show & Edit
 async function getSpaceById(id) {
   return await db.Space.findById(id);
 }
 
-// async function getFullSpaceById will be needed here as spacesRoutes adds functionality
+async function getSpaceWithTasks(spaceId) {
+  return await db.Space.findById(spaceId).populate({ path: "tasks" }).exec();
+}
 
 // Create
 async function createSpace(spaceInformation, userId) {
   spaceInformation.userId = userId;
-
   const [newSpace, thisUser] = await Promise.all([
     db.Space.create(spaceInformation),
     db.User.findById(userId),
@@ -33,11 +30,6 @@ async function createSpace(spaceInformation, userId) {
   await thisUser.save();
   return newSpace;
 }
-
-// // Edit
-// async function getFullSpaceById(id) {
-//   const foundSpace = { }
-// }
 
 // Update
 async function updateSpaceById(id, reqBody) {
@@ -61,6 +53,7 @@ module.exports = {
   getSpaceOwner,
   getSpaces,
   getSpaceById,
+  getSpaceWithTasks,
   createSpace,
   updateSpaceById,
   deleteSpaceById,
