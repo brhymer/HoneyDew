@@ -1,8 +1,0 @@
-<%- include("../partials/_head", {title: task.title}) %>
-    <h1><%=task.title%></h1>
-    <p><%=task.description%></p>
-    <p>Due: <%=task.dueDate.toLocaleDateString()%></p>
-    <p>Task complete? <%=task.complete ? "Yep" : "Nope"%></p>
-    <div><img src="<%=task.imgUrl%>" alt="<%=task.title%>"></div>
-
-<%- include("../partials/_footer")%>

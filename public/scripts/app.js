@@ -22,15 +22,40 @@ $(`#deleteSpaceModal`).on("show.bs.modal", (event) => {
 
 $(`#showTaskModal`).on("show.bs.modal", (event) => {
   const targetTask = event.relatedTarget;
+  const taskId = targetTask.getAttribute("data-taskId");
+  const taskTitle = targetTask.getAttribute("data-tasktitle");
+  const taskDescription = targetTask.getAttribute("data-taskdescription");
+  const taskDueDate = targetTask.getAttribute("data-taskduedate");
+  const taskComplete = targetTask.getAttribute("data-taskcomplete");
+  const taskImgUrl = targetTask.getAttribute("data-taskimageurl");
 
-  console.log("You clicked show");
-  console.log(targetTask);
-  document.querySelector(
-    "#show-task-title"
-  ).innerHTML = targetTask.getAttribute("data-tasktitle");
+  //Modal Label
+  document.querySelector("#showTaskModalLabel").innerHTML = taskTitle;
+  //Body
+  document.querySelector("#show-task-description").innerHTML = taskDescription;
+  document.querySelector("#show-task-dueDate").innerHTML = taskDueDate;
+  document.querySelector("#show-task-complete").innerHTML = taskComplete;
+  document.querySelector("#show-task-image").setAttribute("src", taskImgUrl);
+  if (taskImgUrl)
+    document.querySelector("#show-task-image").setAttribute("alt", taskTitle);
+
+  //Buttons
   const editButton = document.querySelector("#show-task-button");
-  const targetTaskId = targetTask.getAttribute("data-taskId");
-  editButton.setAttribute("href", `/tasks/edit/${targetTaskId}`);
+  editButton.setAttribute("href", `/tasks/edit/${taskId}`);
+});
+
+$(`#showTaskModal`).on("hidden.bs.modal", (event) => {
+  document.querySelector("#showTaskModalLabel").innerHTML = "";
+  //Body
+  document.querySelector("#show-task-description").innerHTML = "";
+  document.querySelector("#show-task-dueDate").innerHTML = "";
+  document.querySelector("#show-task-complete").innerHTML = "";
+  document.querySelector("#show-task-image").setAttribute("src", "");
+  document.querySelector("#show-task-image").setAttribute("alt", "");
+
+  //Buttons
+  const editButton = document.querySelector("#show-task-button");
+  editButton.setAttribute("href", `/tasks/edit/`);
 });
 
 function addFavIcon() {
