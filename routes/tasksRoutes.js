@@ -22,15 +22,22 @@ router.get("/", async (req, res, next) => {
 });
 
 //NEW
-router.get("/new", async (req, res, next) => {
+router.get("/new/:spaceId?", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
     const userSpaces = await ctrl.authCtrl.getUserWithSpaces(
       req.session.currentUser
     );
+    let currentSpace = null;
+    if (req.query.spaceId) {
+      currentSpace = userSpaces.spaces.filter(
+        (space) => space._id.toString() === req.query.spaceId.toString()
+      )[0];
+    }
     res.render("tasks/new", {
       title: "New Task",
       spaces: userSpaces.spaces,
+      currentSpace: currentSpace,
     });
   } catch (err) {
     next(err);
@@ -43,7 +50,6 @@ router.post(
   imageUpload.multerUploads.single("imgFile"),
   async (req, res, next) => {
     if (!req.session.currentUser) return res.redirect("/auth/login");
-
     try {
       let imgObject;
       if (req.file) {
@@ -56,7 +62,7 @@ router.post(
         imgObject
       );
       //This deletes our image from the server
-      if (req.file) res.unlinkSync(req.file.path);
+      if (req.file) fs.unlinkSync(req.file.path);
       res.redirect("/tasks");
     } catch (err) {
       next(err);
@@ -66,14 +72,12 @@ router.post(
 
 //SHOW
 router.get("/:id", async (req, res, next) => {
-  //If you're not logged in, you don't get to see
-
   if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
     const thisTask = await ctrl.tasksCtrl.getTaskById(req.params.id);
     if (req.session.currentUser.toString() !== thisTask.userId.toString()) {
       return res.render("tasks/index", {
-        title: "You can't",
+        title: "Permission Error",
         tasks: await ctrl.tasksCtrl.getTasks({
           userId: req.session.currentUser,
         }),
@@ -89,6 +93,8 @@ router.get("/:id", async (req, res, next) => {
 });
 
 //EDIT
+//TODO Edit needs to include editing an image
+//If the body contains an image, replace the image (we'll restrict tasks to one image)
 router.get("/edit/:id", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
@@ -126,6 +132,7 @@ router.put("/:id", async (req, res, next) => {
 
 //DELETE
 router.delete("/:id", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
     const deletedTask = await ctrl.tasksCtrl.deleteTaskById(
       req.params.id,

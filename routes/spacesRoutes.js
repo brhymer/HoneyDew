@@ -2,12 +2,6 @@ const express = require("express");
 const router = express.Router();
 const ctrl = require("../controllers");
 
-// router.get("/", (req, res, next) => {
-//   res.render("spaces/index");
-// });
-
-// path is '/spaces'
-
 // Index route
 router.get("/", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
@@ -54,14 +48,11 @@ router.post("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   try {
     if (!req.session.currentUser) return res.redirect("/auth/login");
-    const thisSpace = await ctrl.spacesCtrl.getSpaceById(req.params.id);
-    const getTasks = await ctrl.authCtrl.getUserWithTasks(
-      req.session.currentUser
-    );
+    const thisSpace = await ctrl.spacesCtrl.getSpaceWithTasks(req.params.id);
     res.render("spaces/show", {
-      title: "Details on this space", // edit to make dynamic
+      title: thisSpace.name, // edit to make dynamic
       space: thisSpace,
-      tasks: getTasks,
+      tasks: thisSpace.tasks,
     });
   } catch (err) {
     next(err);
