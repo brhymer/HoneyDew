@@ -1,13 +1,16 @@
 <%- include("../partials/_head")%>
 
-<h1>Customize your profile</h1>
+<h1>Welcome home, <%= user.username %>!</h1>
 
 <p><b>Photo: </b><%= %></p>
 <!-- add photo here -->
 <p><b>Username: </b><%= user.username%></p>
 <p><b>Full name: </b><%= user.firstName%> <%= user.lastName%></p>
 <p><b>Email address: </b><%= user.email%></p>
-<p><b>Joined: </b></p>
+<p><b>Joined: </b><%= user.joined%></p>
+<p><b>Name of home space: </b></p>
+
+<a href="/auth/edit">Customize your profile</a>
 
 <%- include ("../partials/_deleteTaskModal")%> <%- include
 ("../partials/_showTaskModal")%> <%- include("../partials/_footer")%>
