@@ -36,7 +36,7 @@
                   <tr>
                       <th scope="row"><%=tasks.indexOf(task) + 1%></th>
                       <td><form action="/tasks/complete/<%=task._id%>/<%=task.complete%>?_method=PUT" method="POST">
-                        <button type="submit" ><i class="<%=task.complete ? "fas fa-check-circle" : "far fa-check-circle" %>"></i></button>
+                        <button type="submit" class="btn"><i class="<%=task.complete ? "fas fa-check-circle" : "far fa-check-circle" %>"></i></button>
                         </form>
                     </td>
                           
