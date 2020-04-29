@@ -79,7 +79,14 @@ router.post(
       };
 
       //Create user
-      await ctrl.authCtrl.createUser(userData);
+      const thisUser = await ctrl.authCtrl.createUser(userData);
+
+      //Create default space
+      const homeSpace = {
+        name: "Home",
+        description: "Default space",
+      };
+      await ctrl.spacesCtrl.createSpace(homeSpace, thisUser._id);
 
       //redirect to login
       res.render("auth/login", { title: "Login" });
@@ -116,6 +123,52 @@ router.get("/myprofile", async (req, res, next) => {
     next(err);
   }
 });
+
+// Edit user profile
+router.get("/edit", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
+  try {
+    const userData = await ctrl.authCtrl.findUser(req.session.currentUser);
+    res.render("auth/edit", {
+      title: "Customize your Profile",
+      user: userData,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Update user profile
+router.put("/myprofile", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
+  try {
+    console.log(req.session.currentUser);
+    const updatedUser = await ctrl.authCtrl.updateUser(
+      req.session.currentUser,
+      req.body
+    );
+    res.render("auth/myprofile", {
+      user: updatedUser,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// router.put("/:id", async (req, res, next) => {
+//   if (!req.session.currentUser) return res.redirect("/auth/login");
+//   try {
+//     const updatedTask = await ctrl.tasksCtrl.updateTaskById(
+//       req.params.id,
+//       req.body
+//     );
+//     res.render("tasks/show", {
+//       task: updatedTask,
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 router.delete("/logout", async (req, res, next) => {
   try {

@@ -20,6 +20,16 @@ async function createUser(userData) {
   return await db.User.create(userData);
 }
 
+async function updateUser(id, reqBody) {
+  const updatedUser = { ...reqBody };
+  return await db.User.findByIdAndUpdate(id, updatedUser, { new: true });
+}
+
+async function updateSpaceById(id, reqBody) {
+  const updatedSpace = { ...reqBody };
+  return await db.Space.findByIdAndUpdate(id, updatedSpace, { new: true });
+}
+
 // async function getAllUsers() {
 //   // This is for grabbing all users.
 //   return await db.User.find();
@@ -42,6 +52,7 @@ module.exports = {
   getUserWithTasks,
   getUserWithSpaces,
   createUser,
+  updateUser,
   // getAllUsers,
   formatValidationErrorMessage,
 };
