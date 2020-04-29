@@ -114,7 +114,10 @@ router.post(
 router.get("/myprofile", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
-    const userData = await ctrl.authCtrl.findUser(req.session.currentUser);
+    const userData = await ctrl.authCtrl.getUserWithSpaces(
+      req.session.currentUser
+    );
+    console.log(userData);
     res.render("auth/myprofile", {
       title: "My Profile",
       user: userData,
@@ -154,21 +157,6 @@ router.put("/myprofile", async (req, res, next) => {
     next(err);
   }
 });
-
-// router.put("/:id", async (req, res, next) => {
-//   if (!req.session.currentUser) return res.redirect("/auth/login");
-//   try {
-//     const updatedTask = await ctrl.tasksCtrl.updateTaskById(
-//       req.params.id,
-//       req.body
-//     );
-//     res.render("tasks/show", {
-//       task: updatedTask,
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
 
 router.delete("/logout", async (req, res, next) => {
   try {
