@@ -95,11 +95,11 @@ router.get("/:id", async (req, res, next) => {
 //EDIT
 //TODO Edit needs to include editing an image
 //If the body contains an image, replace the image (we'll restrict tasks to one image)
-router.get("/edit/:id", async (req, res, next) => {
+router.get("/edit/:id/", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
     const thisTask = await ctrl.tasksCtrl.getTaskById(req.params.id);
-    const thisSpace = thisTask.space ? thisTask.space : "NA";
+    const thisSpace = thisTask.spaceId ? thisTask.spaceId : "NA";
     const userSpaces = await ctrl.authCtrl.getUserWithSpaces(
       req.session.currentUser
     );
@@ -122,9 +122,7 @@ router.put("/:id", async (req, res, next) => {
       req.params.id,
       req.body
     );
-    res.render("tasks/show", {
-      task: updatedTask,
-    });
+    res.redirect(`/spaces/${updatedTask.spaceId}`);
   } catch (err) {
     next(err);
   }
