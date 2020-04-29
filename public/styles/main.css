@@ -11,7 +11,9 @@ main {
   display: inline-block;
   max-width: 100%;
 }
-
+.fa-check-circle {
+  cursor: pointer;
+}
 .fas.fa-check-circle {
   color: green;
 }

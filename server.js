@@ -30,6 +30,9 @@ app.use("/auth", routes.authRoutes);
 app.use("/tasks", routes.tasksRoutes);
 app.use("/spaces", routes.spacesRoutes);
 
+/* API ROUTES */
+app.use("/api/v1", routes.apiRoutes);
+
 app.get("/", (req, res) => {
   res.redirect("/spaces/");
 });

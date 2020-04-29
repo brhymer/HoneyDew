@@ -1,4 +1,6 @@
 <%- include("../partials/_head") %>
+<script src="/scripts/spacesShow.js" defer></script>
+<%- include("../partials/_nav") %>
 <main>
     <section class="row d-flex align-items-center">
         <h1 class="d-inline"><%=space.name%></h1>
@@ -34,12 +36,11 @@
               <%tasks.forEach((task) =>{%>
                   <tr>
                       <th scope="row"><%=tasks.indexOf(task) + 1%></th>
-                      <td><form action="/tasks/complete/<%=task._id%>/<%=task.complete%>?_method=PUT" method="POST">
-                        <button type="submit" class="btn"><i class="<%=task.complete ? "fas fa-check-circle" : "far fa-check-circle" %>"></i></button>
-                        </form>
+                      <td>
+                        <i data-taskId="<%=task._id%>" data-taskComplete=<%=task.complete%> class="<%=task.complete ? "fas fa-check-circle" : "far fa-check-circle" %>"></i>
                     </td>
                           
-                      <td><button class="btn btn-outline-primary btn-sm" type="submit" data-toggle="modal" data-target="#showTaskModal"
+                      <td><button id="show-<%=task._id%>"class="btn btn-outline-primary btn-sm" type="submit" data-toggle="modal" data-target="#showTaskModal"
                           data-taskId="<%=task._id%>"
                           data-taskTitle="<%=task.title%>"
                           data-taskDescription="<%=task.description%>"
