@@ -7,18 +7,7 @@ const fs = require("fs");
 
 //INDEX
 router.get("/", async (req, res, next) => {
-  if (!req.session.currentUser) return res.redirect("/auth/login");
-  try {
-    const thisUser = await ctrl.authCtrl.getUserWithTasks(
-      req.session.currentUser
-    );
-    res.render("tasks/index", {
-      title: "Tasks",
-      tasks: thisUser.tasks,
-    });
-  } catch (err) {
-    next(err);
-  }
+  res.redirect("/spaces");
 });
 
 //NEW
@@ -63,7 +52,7 @@ router.post(
       );
       //This deletes our image from the server
       if (req.file) fs.unlinkSync(req.file.path);
-      res.redirect("/tasks");
+      res.redirect(`/spaces/${req.body.spaceId}`);
     } catch (err) {
       next(err);
     }
@@ -93,8 +82,6 @@ router.get("/:id", async (req, res, next) => {
 });
 
 //EDIT
-//TODO Edit needs to include editing an image
-//If the body contains an image, replace the image (we'll restrict tasks to one image)
 router.get("/edit/:id/", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
@@ -103,6 +90,7 @@ router.get("/edit/:id/", async (req, res, next) => {
     const userSpaces = await ctrl.authCtrl.getUserWithSpaces(
       req.session.currentUser
     );
+
     res.render("tasks/edit", {
       title: "Edit Task",
       task: thisTask,
@@ -115,18 +103,35 @@ router.get("/edit/:id/", async (req, res, next) => {
 });
 
 //PUT
-router.put("/:id", async (req, res, next) => {
-  if (!req.session.currentUser) return res.redirect("/auth/login");
-  try {
-    const updatedTask = await ctrl.tasksCtrl.updateTaskById(
-      req.params.id,
-      req.body
-    );
-    res.redirect(`/spaces/${updatedTask.spaceId}`);
-  } catch (err) {
-    next(err);
+router.put(
+  "/:id",
+  imageUpload.multerUploads.single("imgFile"),
+  async (req, res, next) => {
+    if (!req.session.currentUser) return res.redirect("/auth/login");
+    try {
+      let imgObject;
+      let currentTask;
+      if (req.file) {
+        [currentTask, imgObject] = await Promise.all([
+          ctrl.tasksCtrl.getTaskById(req.params.id),
+          cloudinary.uploadToCloudinary(req.file.path),
+        ]);
+        //If you already have an image, delete it
+        if (currentTask.imgPublicId)
+          await cloudinary.deleteFromCloudinary(currentTask.imgPublicId);
+      } else imgObject = "";
+      const updatedTask = await ctrl.tasksCtrl.updateTaskById(
+        req.params.id,
+        req.body,
+        imgObject
+      );
+      if (req.file) fs.unlinkSync(req.file.path);
+      res.redirect(`/spaces/${updatedTask.spaceId}`);
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 //DELETE
 router.delete("/:id", async (req, res, next) => {
@@ -138,7 +143,7 @@ router.delete("/:id", async (req, res, next) => {
     );
     if (deletedTask.imgUrl)
       await cloudinary.deleteFromCloudinary(deletedTask.imgPublicId);
-    res.redirect("/tasks");
+    res.redirect(`/spaces/${deletedTask.spaceId}`);
   } catch (err) {
     next(err);
   }
