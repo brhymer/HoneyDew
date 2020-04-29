@@ -31,7 +31,7 @@ app.use("/tasks", routes.tasksRoutes);
 app.use("/spaces", routes.spacesRoutes);
 
 app.get("/", (req, res) => {
-  res.render("index");
+  res.redirect("/spaces/");
 });
 
 const port = process.env.PORT || 3550;

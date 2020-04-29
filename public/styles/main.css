@@ -11,3 +11,11 @@ main {
   display: inline-block;
   max-width: 100%;
 }
+
+.fas.fa-check-circle {
+  color: green;
+}
+
+.far.fa-check-circle {
+  color: blue;
+}
