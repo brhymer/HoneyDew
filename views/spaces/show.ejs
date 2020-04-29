@@ -35,7 +35,13 @@
                   <tr>
                       <th scope="row"><%=tasks.indexOf(task) + 1%></th>
                       <td><button class="btn btn-outline-primary btn-sm" type="submit" data-toggle="modal" data-target="#showTaskModal"
-                          data-taskId="<%=task._id%>" data-taskTitle="<%=task.title%>"><%=task.title%></button></td>
+                          data-taskId="<%=task._id%>"
+                          data-taskTitle="<%=task.title%>"
+                          data-taskDescription="<%=task.description%>"
+                          data-taskDueDate="<%=task.dueDate.toDateString()%>"
+                          data-taskComplete="<%=task.complete ? "Yep" : "Nope"%>"
+                          data-taskImageUrl="<%=task.imgUrl ? task.imgUrl: ""%>"
+                          ><%=task.title%></button></td>
                       <td><%=task.dueDate.toDateString()%></td>
                       <td><a class="btn btn-primary btn-sm" href="/tasks/edit/<%=task._id%>">Edit</a></td>
                       <td><button class="btn btn-danger btn-sm" type="submit" data-toggle="modal" data-target="#deleteTaskModal"
