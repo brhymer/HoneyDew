@@ -10,6 +10,17 @@ const UserSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
     },
+    imgUrl: String,
+    imgPublicId: String,
+    firstName: {
+      type: String,
+    },
+    lastName: {
+      type: String,
+    },
+    // joined: {
+    //   type:
+    // }
     password: { type: String },
     tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
     spaces: [{ type: mongoose.Schema.Types.ObjectId, ref: "Space" }],
