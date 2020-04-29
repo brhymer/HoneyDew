@@ -90,7 +90,6 @@ router.get("/edit/:id/", async (req, res, next) => {
     const userSpaces = await ctrl.authCtrl.getUserWithSpaces(
       req.session.currentUser
     );
-
     res.render("tasks/edit", {
       title: "Edit Task",
       task: thisTask,
@@ -142,8 +141,6 @@ router.put("/complete/:id/:status", async (req, res, next) => {
     } else {
       thisTask = await ctrl.tasksCtrl.uncompleteTask(req.params.id);
     }
-
-    // return res.send(thisTask);
     res.redirect(`/spaces/${thisTask.spaceId}`);
   } catch (err) {
     next(err);

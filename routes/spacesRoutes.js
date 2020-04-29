@@ -22,8 +22,12 @@ router.get("/", async (req, res, next) => {
 router.get("/new", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
+    const thisUser = await ctrl.authCtrl.getUserWithSpaces(
+      req.session.currentUser
+    );
     res.render("spaces/new", {
       title: "New space",
+      spaces: thisUser.spaces,
     });
   } catch (err) {
     next(err);
@@ -46,8 +50,8 @@ router.post("/", async (req, res, next) => {
 
 // Show route
 router.get("/:id", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
-    if (!req.session.currentUser) return res.redirect("/auth/login");
     const thisSpace = await ctrl.spacesCtrl.getSpaceWithTasks(req.params.id);
     res.render("spaces/show", {
       title: thisSpace.name, // edit to make dynamic
@@ -61,6 +65,7 @@ router.get("/:id", async (req, res, next) => {
 
 // Edit route
 router.get("/:id/edit", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
     if (!req.session.currentUser) return res.redirect("/auth/login");
     const foundSpace = await ctrl.spacesCtrl.getSpaceById(req.params.id);
@@ -75,8 +80,8 @@ router.get("/:id/edit", async (req, res, next) => {
 
 // Update route
 router.put("/:id", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
-    if (!req.session.currentUser) return res.redirect("/auth/login");
     const updatedSpace = await ctrl.spacesCtrl.updateSpaceById(
       req.params.id,
       req.body
@@ -89,6 +94,7 @@ router.put("/:id", async (req, res, next) => {
 
 // Delete route
 router.delete("/:id", async (req, res, next) => {
+  if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
     const deletedSpace = await ctrl.spacesCtrl.deleteSpaceById(
       req.params.id,
