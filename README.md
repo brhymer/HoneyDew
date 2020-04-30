@@ -1,26 +1,43 @@
 # Project One -- HoneyDew
 
-## MVP
-HoneyDew is a platform for creating and editing a virtual representation of one's home.  When the user registers, a default space named "Home" is created. While logged in, the user can add any number of spaces and assign tasks to them.  There is an option to upload an image to each task.  The spaces can have a one-to-many association, as spaces can be created as children of existing spaces.  The tasks as well are one-to-many, as multiple tasks can be assigned to a given space and traded between them.  Finally, all spaces and associated tasks are likewise associated with the given user.
+## Overview
+<a href="https://ga-honeydew-tasks.azurewebsites.net/">Visit HoneyDew</a><br/>
+HoneyDew is a platform for creating and editing a virtual representation of one's home and the associated tasks. When the user registers, a default space named "Home" is created. While logged in, the user can add any number of spaces or subspaces and assign tasks to them. These tasks can be completed, have images added to them, reassigned to separate spaces, or otherwise deleted. 
 The user can also customize their profile page and add an image.
 
 ---
 
 ## User Stories
-As a user, HoneyDew helps me break my to-do list down by the space within the home that each item is tied to.  I can have overarching tasks that are applied to the home in general, or specific tasks that belong to a given space or even subspace (e.g. closet, pantry).  I can give the tasks a check off my tasks as I complete them, and toggle between displaying all tasks and only those tasks that remain to be completed.
-My HoneyDew page is my house's online presence.
+As a user, HoneyDew helps me break my to-do list down by the space within the home that each item is tied to. I can have overarching tasks that are applied to the home in general (like doing my taxes or taking out the garbage), or specific tasks that belong to a given space or even subspace (I need to paint a wall in the living room, or I need to update the light fixture in the pantry). This allows me to organize my tasks easily and logically by the space I'm in. 
 
 ---
 
 ## Stretch Goals
 
-As we expand on the website, we would like to add the ability to see other users and their spaces, and add a "features" property to spaces.  Furthermore, we would give the site a social element, allowing users to communicate and add comments to one another's spaces.  Another goal would be to expand the user's ability to customize their experience, adding color schemes such as dark mode or monochrome.
+As we expand on the website, we would like to add the ability to see other users and their spaces, and add a "features" property to spaces. Furthermore, we would give the site a social element, allowing users to communicate and add comments to other spaces. Another goal would be to expand the user's ability to customize their experience, adding color schemes such as dark mode or monochrome.
 
 
 ## Technologies, Dependencies
-The app is built using Javascript and Mongo DB, and requires the following dependencies: 
-bcryptjs, Body Parser, Cloudinary, connect-mongo, datauri, dotenv, ejs, express, express-session, express-validator, Method Override, Mongoose, Multer
+The app is built using a MEN stack (MongoDB, Express, and Node.js) and has the following dependencies: 
 
+```js
+- bcryptjs
+- body-parser
+- cloudinary
+- connect-mongo
+- datauri
+- dotenv
+- ejs
+- express
+- express-session
+- express-validator
+- method-override 
+- mongoose 
+- multer
+```
 
-### Materials
-[Collaboration Guide](https://git.generalassemb.ly/SF-SEI-10/Github-collaboration-guide)
+## Data Model
+
+The core of the model is made up of 3 objects: **Users**, which can contain many **Spaces**, which themselves can contain many **Tasks**. Spaces can be either free floating or organized into a parent-child relationship within a User. 
+
+![Data Model](./public/assets/data-model.png)
