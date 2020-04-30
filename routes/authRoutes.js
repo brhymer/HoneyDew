@@ -49,9 +49,6 @@ router.post(
   [check("email").isEmail(), check("password").isLength({ min: 12 })],
   async (req, res, next) => {
     try {
-      //TODO Check that passwords match - form validation
-      //https://express-validator.github.io/docs/
-
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.render("auth/register", {
@@ -88,8 +85,12 @@ router.post(
         name: "Home",
         description: "Default space",
       };
-      await ctrl.spacesCtrl.createSpace(homeSpace, thisUser._id);
-
+      const thisSpace = await ctrl.spacesCtrl.createSpace(
+        homeSpace,
+        thisUser._id
+      );
+      //Only for the first space
+      await ctrl.spacesCtrl.addSelfParent(thisSpace._id);
       //redirect to login
       res.render("auth/login", { title: "Login" });
     } catch (err) {

@@ -22,7 +22,7 @@
         <div class="mt-3">
         <h6>Associated Space*</h6>
         <select name="spaceId" id="spaceId">
-            <option value="" selected>Please choose a space</option>
+            <option value="" disabled selected>Please choose a space</option>
             <% spaces.forEach((space) => { %>
             <option value="<%=space._id%>" <%=thisSpace.toString()===space._id.toString() ? "selected" : ""%>><%=space.name%></option>
             <% }) %>

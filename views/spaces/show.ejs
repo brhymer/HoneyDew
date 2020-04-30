@@ -12,8 +12,19 @@
         <p>Description:</p>
         <p><%=space.description%></p>
     </div>
-    <div class="col-6 px-3">
-
+    <div class="col-3 px-1">
+        <p>Parent:</p>
+        <p><a href="/spaces/<%=parentSpace._id%>"><%=parentSpace.name%></a></p>
+    </div>
+    <div class="col-3 px-1">
+        <p>Child Spaces:</p>
+        <% if(space.spaces.length > 0){%>
+            <%space.spaces.forEach((child) =>{%>
+                <p><a href="/spaces/<%=child._id%>"><%=child.name%></a></p>
+            <%})%>
+        <%} else{%>
+            <p>No child spaces</p>
+        <%}%>
     </div>
   </section>
   <!-- Space task table -->
