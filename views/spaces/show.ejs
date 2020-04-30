@@ -1,0 +1,79 @@
+<%- include("../partials/_head") %>
+<script src="/scripts/spacesShow.js" defer></script>
+<%- include("../partials/_nav") %>
+<main>
+    <section class="row d-flex align-items-center">
+        <h1 class="d-inline"><%=space.name%></h1>
+        <a class="btn btn-primary mx-3 px-2" href="/spaces/<%=space._id%>/edit">Edit</a>
+    </section>
+  <!-- Space Details -->
+  <section class="row my-2">
+    <div class="col-6 px-3">
+        <p>Description:</p>
+        <p><%=space.description%></p>
+    </div>
+    <div class="col-3 px-1">
+        <p>Parent:</p>
+        <p><a href="/spaces/<%=parentSpace._id%>"><%=parentSpace.name%></a></p>
+    </div>
+    <div class="col-3 px-1">
+        <p>Child Spaces:</p>
+        <% if(space.spaces.length > 0){%>
+            <%space.spaces.forEach((child) =>{%>
+                <p><a href="/spaces/<%=child._id%>"><%=child.name%></a></p>
+            <%})%>
+        <%} else{%>
+            <p>No child spaces</p>
+        <%}%>
+    </div>
+  </section>
+  <!-- Space task table -->
+  <section class="row">
+    <h3 class="my-2"><%=space.name%> Tasks</h3>
+    <%if(tasks.length > 0){%>
+      <table class="table">
+          <thead>
+              <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Done</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Due Date</th>
+                  <th scope="col">Edit</th>
+                  <th scope="col">Delete</th>
+                  <th scope="col">Updated</th>
+              </tr>
+          </thead>
+          <tbody>
+              <%tasks.forEach((task) =>{%>
+                  <tr>
+                      <th scope="row"><%=tasks.indexOf(task) + 1%></th>
+                      <td>
+                        <i data-taskId="<%=task._id%>" data-taskComplete=<%=task.complete%> class="<%=task.complete ? "fas fa-check-circle" : "far fa-check-circle" %>"></i>
+                    </td>
+                          
+                      <td><button id="show-<%=task._id%>"class="btn btn-outline-primary btn-sm" type="submit" data-toggle="modal" data-target="#showTaskModal"
+                          data-taskId="<%=task._id%>"
+                          data-taskTitle="<%=task.title%>"
+                          data-taskDescription="<%=task.description%>"
+                          data-taskDueDate="<%=task.dueDate.toDateString()%>"
+                          data-taskComplete="<%=task.complete ? "Yep" : "Nope"%>"
+                          data-taskImageUrl="<%=task.imgUrl ? task.imgUrl: ""%>"
+                          ><%=task.title%></button></td>
+                      <td><%=task.dueDate.toDateString().split(' ').slice(1, -1).join(' ')%></td>
+                      <td><a class="btn btn-primary btn-sm" href="/tasks/edit/<%=task._id%>">Edit</a></td>
+                      <td><button class="btn btn-danger btn-sm" type="submit" data-toggle="modal" data-target="#deleteTaskModal"
+                          data-taskId="<%=task._id%>" data-taskTitle="<%=task.title%>">Delete</button></td>
+                      <td><%=new Date(task.updatedAt).toDateString().split(' ').slice(1, -1).join(' ')%></td>
+                  </tr>
+              <%})%>
+          </tbody>
+      </table>
+      <% } %>
+      <a class="btn btn-info btn-block py-3 my-3" href="/tasks/new?spaceId=<%=space._id%>"> + Add New Task</a>
+  </section>
+
+
+</main>
+<%- include ("../partials/_deleteTaskModal")%>
+<%- include ("../partials/_showTaskModal")%>
+<%- include("../partials/_footer") %>

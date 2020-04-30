@@ -1,0 +1,20 @@
+<%- include("../partials/_head")%>
+<%- include("../partials/_nav") %>
+
+<!-- slated for deletion -->
+
+<main>
+  <h1><%=user.username%>'s Spaces</h1>
+  <%if(locals.errors) {%> <%-include("../partials/_errorAlert", {errors:
+  errors})%> <%}%> <%if(users.spaces> 0){%>
+  <div class="row"></div>
+  <%spaces.forEach((space) =>{%>
+  <div class="col col-md-4 bg-info p-2">
+    <p><%=space.name%></p>
+    <p><%=space.description%></p>
+  </div>
+  <%})%> <% } %>
+</main>
+
+<%- include ("../partials/_deleteTaskModal")%> <%- include
+("../partials/_showTaskModal")%> <%- include("../partials/_footer")%>

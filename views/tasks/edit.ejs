@@ -1,0 +1,52 @@
+<%- include("../partials/_head")%>
+<%- include("../partials/_nav") %>
+
+<main>
+    <h1>Tasks</h1>
+    <%if(locals.error) {%>
+        <%-include("../partials/_errorAlert", {error: error})%>
+    <%}%>
+    <!-- Core form -->
+    <form action="/tasks/<%=task._id%>?_method=PUT" enctype="multipart/form-data" method="POST">
+        <!-- Title -->
+        <div class="mt-3">
+            <label class="d-block" for="title">Title*</label>
+            <input type="text" id="title" name="title" required value="<%=task.title%>">
+        </div>
+        <!-- Due Date -->
+        <div class="mt-3">
+            <label class="d-block" for="dueDate">Due Date:*</label>
+            <input type="date" id="dueDate" name="dueDate" required value="<%=new Date(task.dueDate).toISOString().substring(0,10)%>">
+        </div>
+        <!-- Space -->
+        <div class="mt-3">
+        <h6>Associated Space*</h6>
+        <select name="spaceId" id="spaceId">
+            <option value="" disabled selected>Please choose a space</option>
+            <% spaces.forEach((space) => { %>
+            <option value="<%=space._id%>" <%=thisSpace.toString()===space._id.toString() ? "selected" : ""%>><%=space.name%></option>
+            <% }) %>
+        </select>
+        </div>
+        <!-- Description -->
+        <div class="mt-3">
+            <label class="d-block" for="description">Description</label>
+            <textarea name="description" id="description" rows="5" cols="50"><%=task.description%></textarea>
+        </div>
+        <!-- Image -->
+        <div class="mt-3">
+            <label class="d-block" for="imgFile">Image (optional) :</label>
+            <input type="file" accept="image/*" , id="imgFile" name="imgFile" />
+            <p><em>Note: this will replace any existing image</em></p>
+        </div>
+        <!-- Buttons -->
+        <div class="mt-4">
+            <button class="btn btn-primary btn-sm" type="submit">Update Task</button>
+            <a class="btn btn-danger btn-sm" href="/spaces/<%=thisSpace%>">Cancel</a>
+        </div>
+ 
+    </form>
+
+</main>
+
+<%- include("../partials/_footer")%>
