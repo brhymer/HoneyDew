@@ -5,6 +5,8 @@
     <section class="row d-flex align-items-center">
         <h1 class="d-inline"><%=space.name%></h1>
         <a class="btn btn-primary mx-3 px-2" href="/spaces/<%=space._id%>/edit">Edit</a>
+        <button class="btn btn-danger btn-sm" type="submit" data-toggle="modal" data-target="#deleteSpaceModal"
+            data-spaceId="<%=space._id%>" data-spaceName="<%=space.name%>">Delete</button>
     </section>
   <!-- Space Details -->
   <section class="row my-2">
@@ -75,5 +77,6 @@
 
 </main>
 <%- include ("../partials/_deleteTaskModal")%>
+<%- include ("../partials/_deleteSpaceModal")%>
 <%- include ("../partials/_showTaskModal")%>
 <%- include("../partials/_footer") %>

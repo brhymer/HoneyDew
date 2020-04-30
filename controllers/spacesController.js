@@ -49,11 +49,15 @@ async function updateSpaceById(id, spaceInformation) {
     startingSpace.parentSpace.toString() !== updatedSpace.spaceId.toString()
   ) {
     const originalParent = await db.Space.findById(startingSpace.parentSpace);
-    originalParent.spaces.remove(id);
-    await originalParent.save();
+    if (originalParent) {
+      originalParent.spaces.remove(id);
+      await originalParent.save();
+    }
     const newParent = await db.Space.findById(updatedSpace.spaceId);
-    newParent.spaces.push(id);
-    await newParent.save();
+    if (newParent) {
+      newParent.spaces.push(id);
+      await newParent.save();
+    }
   }
 
   return await db.Space.findByIdAndUpdate(id, updatedSpace, { new: true });
@@ -70,10 +74,16 @@ async function deleteSpaceById(spaceId, userId) {
     db.User.findByIdAndUpdate(userId, { $pull: { spaces: spaceId } }),
     db.Space.findOne({ spaces: spaceId }),
   ]);
+  //If it has a parent space
   if (parentSpace) {
     parentSpace.spaces.remove(spaceId);
     await parentSpace.save();
   }
+  //For the child spaces, set them to be their own parents
+  deletedSpace.spaces.forEach(async (childId) => {
+    await addSelfParent(childId);
+  });
+  //If it has tasks
   await db.Task.deleteMany({ _id: { $in: deletedSpace.tasks } });
   thisUser.spaces.remove(spaceId);
   await thisUser.save();
