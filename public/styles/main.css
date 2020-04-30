@@ -11,9 +11,7 @@ main {
   display: inline-block;
   max-width: 100%;
 }
-.fa-check-circle {
-  cursor: pointer;
-}
+
 .fas.fa-check-circle {
   color: green;
 }
@@ -21,3 +19,49 @@ main {
 .far.fa-check-circle {
   color: blue;
 }
+
+/* #topnav {
+  border-radius: 20px; 
+  background: radial-gradient(rgb(143, 174, 209) 0%, #7d8ad3 100%);
+  margin: 0 -24px
+}
+
+#cont{
+  height: 100vh; 
+  background: rgb(227, 243, 248);
+  padding: 12px 24px;
+}
+
+body{
+  background: radial-gradient(ellipse at bottom, rgb(23, 49, 78) 0%, #e0e2ec 100%);
+  font-family: Haettenschweiler;
+color: rgb(36, 35, 35)
+}
+
+a{
+  color: darkblue
+}
+
+.btn-danger {
+  background: darkred;
+  color: rgb(230, 221, 221);
+  border-radius: 50%;
+}
+
+.btn-primary {
+  background: rgb(3, 32, 75);
+  color: rgb(230, 221, 221);
+  border-radius: 50%;
+}
+
+.btn-dark {
+  background: rgb(37, 55, 82);
+  color: rgb(230, 221, 221);
+  border-radius: 50%;
+  
+}
+
+.btn-primary:hover, .btn-danger:hover, .btn-dark:hover {
+  transform: scale(1.05);
+  transition: .6s linear;
+} */
