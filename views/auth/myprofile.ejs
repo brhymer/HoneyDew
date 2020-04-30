@@ -7,7 +7,9 @@
 </section>
 
 <section class="row flex-column mt-4">
+  <%if(user.imgUrl){%>
 <img src="<%=user.imgUrl%>" alt="<%=user.username%>" style="display: block; max-width: 300px;">
+<%}%>
 <!-- add photo here -->
 <p><b>Username: </b><%= user.username%></p>
 <p><b>Full name: </b><%= user.firstName%> <%= user.lastName%></p>
@@ -41,6 +43,7 @@
         >
       </td>
       <td>
+        <%if(!space.isRootSpace){%>
         <button
           class="btn btn-danger btn-sm"
           type="submit"
@@ -51,6 +54,7 @@
         >
           Delete
         </button>
+        <%}%>
       </td>
       <td><%= new Date(space.updatedAt).toDateString()%></td>
     </tr>

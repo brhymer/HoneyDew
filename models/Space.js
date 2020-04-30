@@ -12,6 +12,7 @@ const SpaceSchema = new mongoose.Schema(
     features: {
       any: {},
     },
+    isRootSpace: { type: Boolean, default: false },
     parentSpace: { type: mongoose.Schema.Types.ObjectId, ref: "Space" },
     spaces: [{ type: mongoose.Schema.Types.ObjectId, ref: "Space" }],
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

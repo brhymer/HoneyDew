@@ -16,7 +16,7 @@ router.post("/login", async (req, res, next) => {
     //If user email not there, invalid credential
     const user = await ctrl.authCtrl.getUser({ username: req.body.username });
     if (!user) {
-      res.render("auth/login", {
+      return res.render("auth/login", {
         title: "Login",
         errors: ["Invalid Credentials"],
       });
@@ -25,13 +25,12 @@ router.post("/login", async (req, res, next) => {
     //if they don't match, invalid credential
     const passwordsMatch = bcrypt.compareSync(req.body.password, user.password);
     if (!passwordsMatch) {
-      res.render("auth/login", {
+      return res.render("auth/login", {
         title: "Login",
         errors: ["Invalid Credentials"],
       });
     }
 
-    // create session
     req.session.currentUser = user._id;
     req.session.username = user.username;
     res.redirect("/");
@@ -84,6 +83,7 @@ router.post(
       const homeSpace = {
         name: "Home",
         description: "Default space",
+        isRootSpace: true,
       };
       const thisSpace = await ctrl.spacesCtrl.createSpace(
         homeSpace,
@@ -99,20 +99,6 @@ router.post(
   }
 );
 
-// Find all users
-// router.get("/users", async (req, res, next) => {
-//   if (!req.session.currentUser) return res.redirect("/auth/login");
-//   try {
-//     const allUsers = await ctrl.authCtrl.getAllUsers;
-//     res.render("auth/users", {
-//       title: "All users",
-//       users: allUsers,
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
 // User profile
 router.get("/myprofile", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
@@ -120,7 +106,6 @@ router.get("/myprofile", async (req, res, next) => {
     const userData = await ctrl.authCtrl.getUserWithSpaces(
       req.session.currentUser
     );
-    console.log(userData);
     res.render("auth/myprofile", {
       title: "My Profile",
       user: userData,

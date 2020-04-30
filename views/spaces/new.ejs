@@ -28,7 +28,7 @@
       <select name="spaceId" id="spaceId">
         <option value="" disabled>Please select a space</option>
         <% spaces.forEach((space) => { %>
-        <option value="<%=space._id%>"><%=space.name%></option>
+        <option value="<%=space._id%>" <%=targetSpace !== undefined && space._id.toString() === targetSpace.toString() ? "selected": ""%>><%=space.name%></option>
         <% }) %>
       </select>
     </div>
