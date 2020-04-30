@@ -25,7 +25,7 @@
         <td><a class="btn btn-primary btn-sm" href="/spaces/<%=space._id%>/edit">Edit</a></td>
         <td><button class="btn btn-danger btn-sm" type="submit" data-toggle="modal" data-target="#deleteSpaceModal"
             data-spaceId="<%=space._id%>" data-spaceName="<%=space.name%>">Delete</button></td>
-        <td><%= new Date(space.updatedAt).toDateString()%></td>
+        <td><%= new Date(space.updatedAt).toDateString().split(' ').slice(1, -1).join(' ')%></td>
       </tr>
       <%})%>
     </tbody>

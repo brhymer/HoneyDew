@@ -59,11 +59,11 @@
                           data-taskComplete="<%=task.complete ? "Yep" : "Nope"%>"
                           data-taskImageUrl="<%=task.imgUrl ? task.imgUrl: ""%>"
                           ><%=task.title%></button></td>
-                      <td><%=task.dueDate.toDateString()%></td>
+                      <td><%=task.dueDate.toDateString().split(' ').slice(1, -1).join(' ')%></td>
                       <td><a class="btn btn-primary btn-sm" href="/tasks/edit/<%=task._id%>">Edit</a></td>
                       <td><button class="btn btn-danger btn-sm" type="submit" data-toggle="modal" data-target="#deleteTaskModal"
                           data-taskId="<%=task._id%>" data-taskTitle="<%=task.title%>">Delete</button></td>
-                      <td><%=new Date(task.updatedAt).toDateString()%></td>
+                      <td><%=new Date(task.updatedAt).toDateString().split(' ').slice(1, -1).join(' ')%></td>
                   </tr>
               <%})%>
           </tbody>
