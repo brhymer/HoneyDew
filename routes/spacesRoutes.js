@@ -52,11 +52,12 @@ router.post("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
-    const thisSpace = await ctrl.spacesCtrl.getSpaceWithTasks(req.params.id);
+    const thisSpace = await ctrl.spacesCtrl.getFullSpace(req.params.id);
     res.render("spaces/show", {
       title: thisSpace.name, // edit to make dynamic
       space: thisSpace,
       tasks: thisSpace.tasks,
+      parentSpace: await ctrl.spacesCtrl.getSpaceById(thisSpace.parentSpace),
     });
   } catch (err) {
     next(err);
@@ -67,11 +68,14 @@ router.get("/:id", async (req, res, next) => {
 router.get("/:id/edit", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
-    if (!req.session.currentUser) return res.redirect("/auth/login");
-    const foundSpace = await ctrl.spacesCtrl.getSpaceById(req.params.id);
+    const [thisSpace, allSpaces] = await Promise.all([
+      ctrl.spacesCtrl.getSpaceById(req.params.id),
+      ctrl.spacesCtrl.getSpaces({ userId: req.session.currentUser }),
+    ]);
     res.render("./spaces/edit", {
       title: "Edit this Space",
-      space: foundSpace,
+      thisSpace: thisSpace,
+      spaces: allSpaces,
     });
   } catch (err) {
     next(err);
