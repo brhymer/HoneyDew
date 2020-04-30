@@ -43,8 +43,10 @@ async function updateTaskById(taskId, modifiedTask, imageObject) {
   if (modifiedTask.spaceId === "") modifiedTask.spaceId = null;
   if (modifiedTask.dueDate)
     modifiedTask.dueDate = adjustDateForTimeZone(modifiedTask.dueDate);
-  modifiedTask.imgUrl = imageObject.url;
-  modifiedTask.imgPublicId = imageObject.public_id;
+  if (imageObject) {
+    modifiedTask.imgUrl = imageObject.url;
+    modifiedTask.imgPublicId = imageObject.public_id;
+  }
   const [updatedTask, startingSpace] = await Promise.all([
     db.Task.findByIdAndUpdate(taskId, modifiedTask, { new: true }),
     db.Space.findOne({ tasks: taskId })

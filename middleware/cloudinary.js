@@ -9,9 +9,9 @@ cloudinary.config({
 
 function uploadToCloudinary(imagePath) {
   return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload(imagePath, (err, url) => {
+    cloudinary.uploader.upload(imagePath, (err, imgObject) => {
       if (err) return reject(err);
-      return resolve(url);
+      return resolve(imgObject);
     });
   });
 }

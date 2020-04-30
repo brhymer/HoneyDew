@@ -18,7 +18,6 @@ const UserSchema = new mongoose.Schema(
     lastName: {
       type: String,
     },
-    homespace: { type: String },
     joined: { type: Date, required: true, default: Date.now },
     password: { type: String },
     tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
