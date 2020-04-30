@@ -19,7 +19,7 @@ router.get("/", async (req, res, next) => {
 });
 
 // New route
-router.get("/new", async (req, res, next) => {
+router.get("/new/:spaceId?", async (req, res, next) => {
   if (!req.session.currentUser) return res.redirect("/auth/login");
   try {
     const thisUser = await ctrl.authCtrl.getUserWithSpaces(
@@ -28,6 +28,7 @@ router.get("/new", async (req, res, next) => {
     res.render("spaces/new", {
       title: "New space",
       spaces: thisUser.spaces,
+      targetSpace: req.query.spaceId ? req.query.spaceId : "",
     });
   } catch (err) {
     next(err);

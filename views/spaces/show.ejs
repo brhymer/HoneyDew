@@ -5,6 +5,10 @@
     <section class="row d-flex align-items-center">
         <h1 class="d-inline"><%=space.name%></h1>
         <a class="btn btn-primary mx-3 px-2" href="/spaces/<%=space._id%>/edit">Edit</a>
+        <%if(!space.isRootSpace){%>
+        <button class="btn btn-danger btn-sm" type="submit" data-toggle="modal" data-target="#deleteSpaceModal"
+            data-spaceId="<%=space._id%>" data-spaceName="<%=space.name%>">Delete</button>
+            <%}%>
     </section>
   <!-- Space Details -->
   <section class="row my-2">
@@ -22,9 +26,8 @@
             <%space.spaces.forEach((child) =>{%>
                 <p><a href="/spaces/<%=child._id%>"><%=child.name%></a></p>
             <%})%>
-        <%} else{%>
-            <p>No child spaces</p>
         <%}%>
+        <a class="btn btn-primary mx-3 px-2 py-0" href="/spaces/new?spaceId=<%=space._id%>">New Child Space</a>
     </div>
   </section>
   <!-- Space task table -->
@@ -75,5 +78,6 @@
 
 </main>
 <%- include ("../partials/_deleteTaskModal")%>
+<%- include ("../partials/_deleteSpaceModal")%>
 <%- include ("../partials/_showTaskModal")%>
 <%- include("../partials/_footer") %>
