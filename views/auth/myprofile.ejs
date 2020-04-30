@@ -1,14 +1,21 @@
 <%- include("../partials/_head")%>
+<%- include("../partials/_nav")%>
 
+<section class="row flex-column mt-2">
 <h1>Welcome home, <%= user.username %>!</h1>
+<a href="/auth/edit">Customize your profile</a>
+</section>
 
-<p><b>Photo: </b><%= %></p>
+<section class="row flex-column mt-4">
+<img src="<%=user.imgUrl%>" alt="<%=user.username%>" style="display: block; max-width: 300px;">
 <!-- add photo here -->
 <p><b>Username: </b><%= user.username%></p>
 <p><b>Full name: </b><%= user.firstName%> <%= user.lastName%></p>
 <p><b>Email address: </b><%= user.email%></p>
-<p><b>Joined: </b><%= user.joined%></p>
+<p><b>Joined: </b><%= user.joined.toDateString()%></p>
+</section>
 
+<section class="row mt-4">
 <%if(user.spaces.length > 0){%>
 <p><b>Your spaces: </b></p>
 <table class="table">
@@ -53,8 +60,8 @@
 <%} else {%>
 <p>No spaces exist, please see a physicist</p>
 <% } %>
+</section>
 
-<a href="/auth/edit">Customize your profile</a>
 
-<%- include ("../partials/_deleteTaskModal")%> <%- include
-("../partials/_showTaskModal")%> <%- include("../partials/_footer")%>
+<%- include ("../partials/_deleteSpaceModal")%> 
+<%- include("../partials/_footer")%>

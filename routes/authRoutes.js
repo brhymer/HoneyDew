@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const ctrl = require("../controllers");
 const bcrypt = require("bcryptjs");
+const imageUpload = require("../middleware/multer");
+const cloudinary = require("../middleware/cloudinary");
+const fs = require("fs");
 const { check, validationResult } = require("express-validator");
 
 router.get("/login", (req, res, next) => {
@@ -18,7 +21,6 @@ router.post("/login", async (req, res, next) => {
         errors: ["Invalid Credentials"],
       });
     }
-
     //use bcrypt compareSync to compare the req.body.pw with the user object pw
     //if they don't match, invalid credential
     const passwordsMatch = bcrypt.compareSync(req.body.password, user.password);
@@ -142,21 +144,34 @@ router.get("/edit", async (req, res, next) => {
 });
 
 // Update user profile
-router.put("/myprofile", async (req, res, next) => {
-  if (!req.session.currentUser) return res.redirect("/auth/login");
-  try {
-    console.log(req.session.currentUser);
-    const updatedUser = await ctrl.authCtrl.updateUser(
-      req.session.currentUser,
-      req.body
-    );
-    res.render("auth/myprofile", {
-      user: updatedUser,
-    });
-  } catch (err) {
-    next(err);
+router.put(
+  "/myprofile",
+  imageUpload.multerUploads.single("imgFile"),
+  async (req, res, next) => {
+    if (!req.session.currentUser) return res.redirect("/auth/login");
+    try {
+      let imgObject;
+      let currentUser;
+      if (req.file) {
+        [currentUser, imgObject] = await Promise.all([
+          ctrl.authCtrl.findUser(req.session.currentUser),
+          cloudinary.uploadToCloudinary(req.file.path),
+        ]);
+        if (currentUser.imgPublicId)
+          await cloudinary.deleteFromCloudinary(currentUser.imgPublicId);
+      } else imgObject = "";
+      const updatedUser = await ctrl.authCtrl.updateUser(
+        req.session.currentUser,
+        req.body,
+        imgObject
+      );
+      if (req.file) fs.unlinkSync(req.file.path);
+      res.redirect("/auth/myprofile");
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 router.delete("/logout", async (req, res, next) => {
   try {

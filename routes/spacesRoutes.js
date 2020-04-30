@@ -100,6 +100,11 @@ router.delete("/:id", async (req, res, next) => {
       req.params.id,
       req.session.currentUser
     );
+    await ctrl.tasksCtrl.deleteTasksByParent(deletedSpace.tasks);
+    await ctrl.authCtrl.removeTasks(
+      req.session.currentUser,
+      deletedSpace.tasks
+    );
     res.redirect("/spaces");
   } catch (err) {
     next(err);

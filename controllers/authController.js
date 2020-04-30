@@ -20,8 +20,12 @@ async function createUser(userData) {
   return await db.User.create(userData);
 }
 
-async function updateUser(id, reqBody) {
+async function updateUser(id, reqBody, imageObject) {
   const updatedUser = { ...reqBody };
+  if (imageObject) {
+    updatedUser.imgUrl = imageObject.url;
+    updatedUser.imgPublicId = imageObject.public_id;
+  }
   return await db.User.findByIdAndUpdate(id, updatedUser, { new: true });
 }
 
@@ -30,10 +34,11 @@ async function updateSpaceById(id, reqBody) {
   return await db.Space.findByIdAndUpdate(id, updatedSpace, { new: true });
 }
 
-// async function getAllUsers() {
-//   // This is for grabbing all users.
-//   return await db.User.find();
-// }
+async function removeTasks(userId, taskList) {
+  await db.User.findByIdAndUpdate(userId, {
+    $pullAll: { tasks: taskList },
+  });
+}
 
 function formatValidationErrorMessage(errors) {
   const formattedErrors = [];
@@ -53,6 +58,6 @@ module.exports = {
   getUserWithSpaces,
   createUser,
   updateUser,
-  // getAllUsers,
+  removeTasks,
   formatValidationErrorMessage,
 };

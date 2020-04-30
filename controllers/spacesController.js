@@ -41,11 +41,11 @@ async function updateSpaceById(id, reqBody) {
 async function deleteSpaceById(spaceId, userId) {
   const [deletedSpace, thisUser] = await Promise.all([
     db.Space.findByIdAndDelete(spaceId),
-    db.User.findById(userId),
+    db.User.findByIdAndUpdate(userId, { $pull: { spaces: spaceId } }),
   ]);
   await db.Task.deleteMany({ _id: { $in: deletedSpace.tasks } });
-  thisUser.spaces.remove(spaceId);
-  await thisUser.save();
+  // thisUser.spaces.remove(spaceId);
+  // await thisUser.save();
   return deletedSpace;
 }
 
