@@ -41,3 +41,9 @@ The app is built using a MEN stack (MongoDB, Express, and Node.js) and has the f
 The core of the model is made up of 3 objects: **Users**, which can contain many **Spaces**, which themselves can contain many **Tasks**. Spaces can be either free floating or organized into a parent-child relationship within a User. 
 
 ![Data Model](./public/assets/data-model.png)
+
+## Wireframe
+
+The wireframe details the 7 pages that constitute the app: logging in, registering, showing the user profile, editing the user's profile, showing all spaces, showing an individual space, and showing a task.
+
+![Wireframe](./public/assets/wireframe.png)
