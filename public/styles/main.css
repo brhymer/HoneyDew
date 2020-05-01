@@ -51,7 +51,13 @@ a{
   border-radius: 50%;
 }
 
-.btn-primary:hover, .btn-danger:hover, .btn-dark:hover {
+.btn-secondary {
+  background: rgb(37, 55, 82);
+  color: rgb(230, 221, 221);
+  border-radius: 50%;
+}
+
+.btn-primary:hover, .btn-danger:hover, .btn-dark:hover, .btn-secondary:hover{
   transform: scale(1.05);
   transition: .6s linear;
 }
@@ -67,4 +73,8 @@ a{
   min-height:100vh;
   background: rgb(235, 250, 245);
   padding: 12px 24px;
+}
+
+#child-space{
+  border-radius: 10px;
 }
