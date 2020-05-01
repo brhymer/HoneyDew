@@ -1,7 +1,7 @@
 <%- include("../partials/_head") %>
 <%- include("../partials/_nav") %>
 <main>
-  <h1>Add New Space</h1>
+  <h1 class="mt-2">Add New Space</h1>
   <%if(locals.errors) {%> <%-include("../partials/_errorAlert", {errors: errors})%>
   <%}%>
   <form action="/spaces" method="POST">

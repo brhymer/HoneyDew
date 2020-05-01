@@ -2,11 +2,11 @@
 <script src="/scripts/spacesShow.js" defer></script>
 <%- include("../partials/_nav") %>
 <main>
-    <section class="row d-flex align-items-center">
+    <section class="row d-flex align-items-center mt-3">
         <h1 class="d-inline"><%=space.name%></h1>
         <a class="btn btn-primary mx-3 px-2" href="/spaces/<%=space._id%>/edit">Edit</a>
         <%if(!space.isRootSpace){%>
-        <button class="btn btn-danger btn-sm" type="submit" data-toggle="modal" data-target="#deleteSpaceModal"
+        <button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#deleteSpaceModal"
             data-spaceId="<%=space._id%>" data-spaceName="<%=space.name%>">Delete</button>
             <%}%>
     </section>
@@ -20,7 +20,7 @@
         <p>Parent:</p>
         <p><a href="/spaces/<%=parentSpace._id%>"><%=parentSpace.name%></a></p>
     </div>
-    <div class="col-3 px-1">
+    <div class="col-3 px-1 child-spaces">
         <p>Child Spaces:</p>
         <% if(space.spaces.length > 0){%>
             <%space.spaces.forEach((child) =>{%>
@@ -72,7 +72,7 @@
           </tbody>
       </table>
       <% } %>
-      <a class="btn btn-info btn-block py-3 my-3" href="/tasks/new?spaceId=<%=space._id%>"> + Add New Task</a>
+      <a class="btn btn-info btn-block my-3" href="/tasks/new?spaceId=<%=space._id%>"> <h4>+ Add New Task</h2></a>
   </section>
 
 
