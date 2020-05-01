@@ -2,69 +2,68 @@
 <%- include("../partials/_nav")%>
 
 <section class="row flex-column mt-2">
-<h1>Welcome home, <%= user.username %>!</h1>
-<a href="/auth/edit">Customize your profile</a>
+  <h1>Welcome home, <%= user.username %>!</h1>
+  <a href="/auth/edit">Customize your profile</a>
 </section>
 
-<section class="row flex-column mt-4">
-  <%if(user.imgUrl){%>
-<img src="<%=user.imgUrl%>" alt="<%=user.username%>" style="display: block; max-width: 300px;">
-<%}%>
-<!-- add photo here -->
-<p><b>Username: </b><%= user.username%></p>
-<p><b>Full name: </b><%= user.firstName%> <%= user.lastName%></p>
-<p><b>Email address: </b><%= user.email%></p>
-<p><b>Joined: </b><%= user.joined.toDateString()%></p>
-</section>
+  <section class="row flex-column mt-4">
+    <%if(user.imgUrl){%>
+      <img class = "mb-4"src="<%=user.imgUrl%>" alt="<%=user.username%>" style="display: block; max-width: 300px;">
+    <%}%>
+    <p><b>Username: </b><%= user.username%></p>
+    <p><b>Full name: </b><%= user.firstName%> <%= user.lastName%></p>
+    <p><b>Email address: </b><%= user.email%></p>
+    <p><b>Joined: </b><%= user.joined.toDateString()%></p>
+  </section>
 
-<section class="row mt-4">
-<%if(user.spaces.length > 0){%>
-<p><b>Your spaces: </b></p>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Description</th>
-      <th scope="col">Edit</th>
-      <th scope="col">Delete</th>
-      <th scope="col">Updated</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% user.spaces.forEach((space) => { %>
-    <tr>
-      <th scope="row"><%=user.spaces.indexOf(space) + 1%></th>
-      <td><a href="/spaces/<%=space._id%>"><%=space.name%></a></td>
-      <td><a href="/spaces/<%=space._id%>"><%=space.description%></a></td>
-      <td>
-        <a class="btn btn-primary btn-sm" href="/spaces/<%=space._id%>/edit"
-          >Edit</a
-        >
-      </td>
-      <td>
-        <%if(!space.isRootSpace){%>
-        <button
-          class="btn btn-danger btn-sm"
-          type="submit"
-          data-toggle="modal"
-          data-target="#deleteSpaceModal"
-          data-spaceId="<%=space._id%>"
-          data-spaceName="<%=space.name%>"
-        >
-          Delete
-        </button>
-        <%}%>
-      </td>
-      <td><%= new Date(space.updatedAt).toDateString().split(' ').slice(1, -1).join(' ')%></td>
-    </tr>
-    <%})%>
-  </tbody>
-</table>
-<%} else {%>
-<p>No spaces exist, please see a physicist</p>
-<% } %>
-</section>
+  <section class="row mt-4">
+    <%if(user.spaces.length > 0){%>
+    <p><b>Your spaces: </b></p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
+          <th scope="col">Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% user.spaces.forEach((space) => { %>
+        <tr>
+          <th scope="row"><%=user.spaces.indexOf(space) + 1%></th>
+          <td><a href="/spaces/<%=space._id%>"><%=space.name%></a></td>
+          <td><a href="/spaces/<%=space._id%>"><%=space.description%></a></td>
+          <td>
+            <a class="btn btn-primary btn-sm" href="/spaces/<%=space._id%>/edit"
+              >Edit</a
+            >
+          </td>
+          <td>
+            <%if(!space.isRootSpace){%>
+            <button
+              class="btn btn-danger btn-sm"
+              type="submit"
+              data-toggle="modal"
+              data-target="#deleteSpaceModal"
+              data-spaceId="<%=space._id%>"
+              data-spaceName="<%=space.name%>"
+            >
+              Delete
+            </button>
+            <%}%>
+          </td>
+          <td><%= new Date(space.updatedAt).toDateString().split(' ').slice(1, -1).join(' ')%></td>
+        </tr>
+        <%})%>
+      </tbody>
+    </table>
+    <%} else {%>
+    <p>No spaces exist, please see a physicist</p>
+    <% } %>
+  </section>
 
 
 <%- include ("../partials/_deleteSpaceModal")%> 
