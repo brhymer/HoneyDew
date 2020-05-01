@@ -56,7 +56,7 @@
         </button>
         <%}%>
       </td>
-      <td><%= new Date(space.updatedAt).toDateString()%></td>
+      <td><%= new Date(space.updatedAt).toDateString().split(' ').slice(1, -1).join(' ')%></td>
     </tr>
     <%})%>
   </tbody>
